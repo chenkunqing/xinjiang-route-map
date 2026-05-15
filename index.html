@@ -1314,14 +1314,17 @@
             }
         }
 
-        let routeLayers = [];
-        let markerLayers = [];
+        // 存储所有地图图层
+        let mapLayers = [];
 
         function clearMap() {
-            routeLayers.forEach(layer => map.removeLayer(layer));
-            markerLayers.forEach(layer => map.removeLayer(layer));
-            routeLayers = [];
-            markerLayers = [];
+            // 移除所有已添加的图层
+            mapLayers.forEach(layer => {
+                try {
+                    map.removeLayer(layer);
+                } catch(e) {}
+            });
+            mapLayers = [];
         }
 
         function getMarkerColor(type) {
@@ -1376,7 +1379,7 @@
                     weight: route.weight,
                     opacity: route.opacity
                 }).addTo(map);
-                routeLayers.push(polyline);
+                mapLayers.push(polyline);
             });
             
             // 添加标记
@@ -1391,10 +1394,11 @@
                     opacity: 1,
                     fillOpacity: 0.9
                 }).addTo(map);
-                markerLayers.push(circleMarker);
+                mapLayers.push(circleMarker);
                 
                 const labelIcon = createLabelIcon(marker.name, marker.type);
                 const labelMarker = L.marker(marker.coord, {icon: labelIcon}).addTo(map);
+                mapLayers.push(labelMarker);
                 
                 const navName = marker.navName || marker.name;
                 const amapUrl = `https://uri.amap.com/marker?position=${marker.coord[1]},${marker.coord[0]}&name=${encodeURIComponent(navName)}&coordinate=gaode&callnative=1`;
@@ -1417,7 +1421,6 @@
                 `;
                 labelMarker.bindPopup(popupContent);
                 circleMarker.bindPopup(popupContent);
-                markerLayers.push(labelMarker);
             });
             
             map.setView(dayData.center, dayData.zoom);
