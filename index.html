@@ -408,8 +408,52 @@
             text-decoration: none;
         }
 
-        /* Desktop */
+        /* Mobile first - default styles above */
         
+        /* Tablet & Desktop */
+        @media (min-width: 768px) {
+            .header { padding: 40px 20px; }
+            .header h1 { font-size: 32px; }
+            .header p { font-size: 16px; }
+            
+            #map { height: 500px; min-height: 500px; max-height: none; }
+            
+            .legend-card { margin: 0 24px 20px; padding: 20px; }
+            .legend-grid { grid-template-columns: repeat(3, 1fr); }
+            
+            .tabs-container { margin: 0 24px; }
+            .tabs { padding: 12px; gap: 8px; }
+            .tab { padding: 12px 20px; font-size: 14px; }
+            
+            .day-content { padding: 24px; }
+            .day-title { font-size: 22px; }
+            
+            .route-card { margin: 16px 24px; padding: 20px; }
+        }
+        
+        /* Small phones */
+        @media (max-width: 375px) {
+            .header { padding: 12px 12px; }
+            .header h1 { font-size: 18px; }
+            .header p { font-size: 12px; }
+            
+            #map { height: 260px; min-height: 260px; }
+            
+            .tabs-container { margin: 0 8px; }
+            .tabs { gap: 4px; }
+            .tab { padding: 10px 12px; font-size: 12px; white-space: nowrap; }
+            
+            .day-content { padding: 12px; }
+            .day-title { font-size: 16px; }
+            .day-subtitle { font-size: 12px; }
+            
+            .route-card { margin: 8px; padding: 12px; font-size: 13px; }
+            .guide-section { margin: 8px; }
+            .guide-content { padding: 10px 12px; }
+            
+            .timeline-item { flex-direction: column; }
+            .timeline-time { min-width: auto; margin-bottom: 4px; }
+        }
 
         /* Animations */
         .pulse {
@@ -437,151 +481,40 @@
             font-size: 13px;
         }
 
-        /* ========== 移动端适配 ========== */
-        @media (max-width: 768px) {
-            /* Header */
-            .header {
-                padding: 16px 12px;
-            }
-            .header h1 {
-                font-size: 18px;
-                flex-wrap: wrap;
-            }
-            .header p {
-                font-size: 12px;
-            }
-            .header-stats {
-                gap: 16px;
-            }
-            .stat-value {
-                font-size: 16px;
-            }
-            .stat-label {
-                font-size: 10px;
-            }
-
-            /* 地图全屏 */
-            .map-container {
-                padding: 0;
-            }
-            .map-wrapper {
-                border-radius: 0;
-            }
-            #map {
-                height: 45vh !important;
-                min-height: 300px;
-            }
-
-            /* Tabs横向滚动 */
-            .tabs-container {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
-            }
-            .tabs-container::-webkit-scrollbar {
-                display: none;
-            }
-            .tabs {
-                flex-wrap: nowrap;
-                min-width: max-content;
-                padding: 0 8px;
-            }
-            .tab {
-                padding: 10px 16px;
-                font-size: 13px;
-                white-space: nowrap;
-            }
-
-            /* 内容区域 */
-            .day-content {
-                padding: 12px;
-            }
-            .day-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-            .day-title {
-                font-size: 18px;
-            }
-            .day-subtitle {
-                font-size: 13px;
-            }
-
-            /* 路线卡片 */
-            .route-card {
-                padding: 12px;
-                margin-bottom: 12px;
-            }
-            .timeline-item {
-                padding-left: 20px;
-            }
-            .timeline-time {
-                font-size: 12px;
-                min-width: 50px;
-            }
-
-            /* 图例 */
-            .legend-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
-            }
-            .legend-card {
-                padding: 10px;
-            }
-
-            /* 提示框 */
-            .tip, .warning {
-                margin: 12px 0;
-                padding: 10px 12px;
-                font-size: 13px;
-            }
-
-            /* Footer */
-            .footer {
-                padding: 12px;
-                font-size: 11px;
-            }
+        /* 出行指南折叠面板 */
+        .guide-section {
+            background: white;
+            border-radius: 12px;
+            margin: 12px 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
-
-        @media (max-width: 375px) {
-            .header h1 {
-                font-size: 16px;
-            }
-            .stat-value {
-                font-size: 14px;
-            }
-            #map {
-                height: 40vh !important;
-            }
-            .tab {
-                padding: 8px 12px;
-                font-size: 12px;
-            }
-            .legend-grid {
-                grid-template-columns: 1fr;
-            }
+        .guide-title {
+            padding: 14px 16px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+            border-bottom: 1px solid #e5e7eb;
         }
-
+        .guide-title:active { background: #f0f0f0; }
+        .guide-title .arrow { font-size: 12px; color: #999; transition: transform 0.2s; }
+        .guide-title .arrow.open { transform: rotate(180deg); }
+        .guide-content { padding: 12px 16px; font-size: 13px; line-height: 1.8; }
+        .guide-content ul, .guide-content ol { padding-left: 20px; margin: 8px 0; }
+        .guide-content li { margin: 4px 0; }
+        .guide-subtitle { font-weight: 600; font-size: 13px; margin: 12px 0 6px; color: #374151; }
+        .spot-section { margin: 12px 0; padding: 10px; background: #f8fafc; border-radius: 8px; }
+        .spot-name { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+    </style>
 </head>
 <body>
     <div class="header">
-        <h1>🗺️ 新疆9天自驾路线图</h1>
-        <p>2026.6.2 - 6.10 · 3人出行 · 两人轮流开车</p>
-        <div class="header-stats">
-            <div class="stat-item">
-                <div class="stat-value">9</div>
-                <div class="stat-label">天</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">3000+</div>
-                <div class="stat-label">公里</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value">南疆+北疆</div>
-                <div class="stat-label">大环线</div>
-            </div>
-        </div>
+        <h1>新疆9天自由行</h1>
+        <p>2026.6.2 - 6.10</p>
     </div>
     
     <div class="map-container">
@@ -644,16 +577,16 @@
     
     <div class="tabs-container">
         <div class="tabs">
-            <button class="tab active" onclick="showDay('overview')">🗺️ 总览</button>
-            <button class="tab" onclick="showDay('day1')">Day1 6/2</button>
-            <button class="tab" onclick="showDay('day2')">Day2 6/3</button>
-            <button class="tab" onclick="showDay('day3')">Day3 6/4</button>
-            <button class="tab" onclick="showDay('day4')">Day4 6/5</button>
-            <button class="tab" onclick="showDay('day5')">Day5 6/6</button>
-            <button class="tab" onclick="showDay('day6')">Day6 6/7</button>
-            <button class="tab" onclick="showDay('day7')">Day7 6/8</button>
-            <button class="tab" onclick="showDay('day8')">Day8 6/9</button>
-            <button class="tab" onclick="showDay('day9')">Day9 6/10</button>
+            <button class="tab active" onclick="showDay('overview', this)">🗺️ 总览</button>
+            <button class="tab" onclick="showDay('day1', this)">Day1 6/2</button>
+            <button class="tab" onclick="showDay('day2', this)">Day2 6/3</button>
+            <button class="tab" onclick="showDay('day3', this)">Day3 6/4</button>
+            <button class="tab" onclick="showDay('day4', this)">Day4 6/5</button>
+            <button class="tab" onclick="showDay('day5', this)">Day5 6/6</button>
+            <button class="tab" onclick="showDay('day6', this)">Day6 6/7</button>
+            <button class="tab" onclick="showDay('day7', this)">Day7 6/8</button>
+            <button class="tab" onclick="showDay('day8', this)">Day8 6/9</button>
+            <button class="tab" onclick="showDay('day9', this)">Day9 6/10</button>
         </div>
     </div>
     
@@ -682,6 +615,89 @@
                 <li>独库北段（乔尔玛→独山子）：150km无加油站</li>
             </ul>
         </div>
+
+        <!-- 出发前清单 -->
+        <div class="guide-section">
+            <div class="guide-title" onclick="toggleGuide(this)">📋 出发前清单 <span class="arrow">▼</span></div>
+            <div class="guide-content" style="display:none;">
+                <div class="guide-subtitle">🏛️ 证件办理（提前2周）</div>
+                <ul>
+                    <li>✅ 边防证：已办好</li>
+                    <li>☐ 确认两位驾驶员驾照有效</li>
+                    <li>☐ 租车订单加第二驾驶人</li>
+                </ul>
+                <div class="guide-subtitle">📱 提前预订（提前1-2周）</div>
+                <ul>
+                    <li>☐ 塔什库尔干酒店（Day 2住）</li>
+                    <li>☐ 特克斯县城酒店×2晚（Day 5-6住）</li>
+                    <li>☐ 乔尔玛住宿（Day 7住，选择少必须提前）</li>
+                    <li>☐ 乌鲁木齐机场酒店×2晚，确认05:30送机</li>
+                    <li>☐ 喀拉峻/赛里木湖门票提前买</li>
+                </ul>
+                <div class="guide-subtitle">🎒 物品清单</div>
+                <ul>
+                    <li>冲锋衣或薄羽绒（达坂/草原0-10°C）</li>
+                    <li>防晒霜SPF50+ + 遮阳帽 + 墨镜</li>
+                    <li>红景天（长辈出发前3天开始吃）</li>
+                    <li>葡萄糖口服液、晕车药、感冒药</li>
+                    <li>氧气瓶（喀什药店买，约15-20元/瓶）</li>
+                    <li>大容量充电宝、车载手机支架</li>
+                    <li>干粮零食（Day 8独库午餐必备）</li>
+                    <li>身份证×3（检查站频繁查）</li>
+                    <li>少量现金200-300元</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 自驾必知 -->
+        <div class="guide-section">
+            <div class="guide-title" onclick="toggleGuide(this)">🚗 自驾必知规则 <span class="arrow">▼</span></div>
+            <div class="guide-content" style="display:none;">
+                <ol>
+                    <li><strong>加油站规则：</strong>驾驶员出示身份证+驾驶证，所有乘客必须下车站到安全区，后备箱打开检查。每次多花3-5分钟。</li>
+                    <li><strong>区间测速：</strong>高速和国道到处都是区间测速！严格按限速牌开。</li>
+                    <li><strong>安检站：</strong>减速停车出示身份证，有时检查后备箱。外地车可能被多问两句，正常配合。</li>
+                    <li><strong>时差：</strong>新疆用北京时间，但实际晚约2小时。9点天亮，22点天黑。饭店14:00才开门。</li>
+                    <li><strong>车辆：</strong>宋Pro插混，市区用电，高速/山路/独库全程靠油。独库和唐布拉无充电桩。</li>
+                    <li><strong>手机信号：</strong>城市/高速有信号。唐布拉、独库部分路段可能断网。离线地图必备！</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- 高原提醒 -->
+        <div class="guide-section">
+            <div class="guide-title" onclick="toggleGuide(this)">🏔️ 高原住宿提醒 <span class="arrow">▼</span></div>
+            <div class="guide-content" style="display:none;">
+                <div style="margin:8px 0;padding:10px;background:#fff7ed;border-radius:8px;border-left:4px solid #f59e0b;">
+                    <strong>⚠️ 塔县住宿（海拔3100m）</strong>
+                    <ul style="margin:8px 0;padding-left:20px;">
+                        <li>❌ 当晚绝对不要洗澡！容易缺氧头痛</li>
+                        <li>✅ 多喝温水，动作放慢</li>
+                        <li>✅ 长辈若不舒服：喝葡萄糖、吸氧气瓶</li>
+                        <li>✅ 早点睡</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 特产购物 -->
+        <div class="guide-section">
+            <div class="guide-title" onclick="toggleGuide(this)">🛍️ 乌鲁木齐大巴扎购物指南 <span class="arrow">▼</span></div>
+            <div class="guide-content" style="display:none;">
+                <table style="width:100%;font-size:12px;border-collapse:collapse;">
+                    <tr style="background:#f0f0f0;"><th style="padding:6px;text-align:left;">特产</th><th style="padding:6px;">参考价</th><th style="padding:6px;text-align:left;">Tips</th></tr>
+                    <tr><td style="padding:6px;">巴旦木/核桃</td><td style="padding:6px;text-align:center;">30-60元/斤</td><td style="padding:6px;">散装比盒装便宜</td></tr>
+                    <tr style="background:#f8f8f8;"><td style="padding:6px;">葡萄干</td><td style="padding:6px;text-align:center;">20-40元/斤</td><td style="padding:6px;">绿的酸甜，红的纯甜</td></tr>
+                    <tr><td style="padding:6px;">和田大枣</td><td style="padding:6px;text-align:center;">20-30元/斤</td><td style="padding:6px;">又大又甜</td></tr>
+                    <tr style="background:#f8f8f8;"><td style="padding:6px;">风干牛肉</td><td style="padding:6px;text-align:center;">80-120元/斤</td><td style="padding:6px;">可真空包装上飞机</td></tr>
+                    <tr><td style="padding:6px;">昆仑雪菊</td><td style="padding:6px;text-align:center;">30-80元/罐</td><td style="padding:6px;">泡茶好喝</td></tr>
+                </table>
+                <div style="margin-top:10px;font-size:12px;color:#666;">
+                    💡 <strong>砍价：</strong>开价的5-7折可成交！二楼三楼比一楼便宜。<br>
+                    ⚠️ 英吉沙小刀<strong>不能带上飞机</strong>！别买！
+                </div>
+            </div>
+        </div>
     </div>
     
     <!-- Day 1 -->
@@ -705,7 +721,10 @@
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">20:00 - 22:30</div>
-                <div class="timeline-content">⭐ 喀什古城夜游：东门 → 彩虹巷 → 百年老茶馆（15元/壶）→ 古城灯光（21:00亮灯）</div>
+                <div class="timeline-content">
+                    ⭐ <strong>喀什古城</strong>夜游<br>
+                    <span style="font-size:12px;color:#666;">门票免费全天开放 · 中国唯一保存完整的迷宫式伊斯兰古城，2000多年历史 · <strong>玩法：</strong>东门进入→彩虹巷(吾斯塘博依路，彩色门窗拍照圣地)→百年老茶馆(高台民居对面，上二楼喝药茶15元/壶看夜景)→21:00灯光亮起暖黄色调→东巴扎夜市 · <strong>注意：</strong>巷子多易迷路跟着人流走，保管好手机钱包</span>
+                </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">22:00 - 22:30</div>
@@ -737,11 +756,17 @@
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">13:00 - 13:45</div>
-                <div class="timeline-content">⭐ <strong>白沙湖</strong>（免费）：G314路边约160km处，蓝湖+白沙+雪山，像外星球。海拔3300m，别跑跳。</div>
+                <div class="timeline-content">
+                    ⭐ <strong>白沙湖</strong><br>
+                    <span style="font-size:12px;color:#666;">门票免费路边停车直接看 · 帕米尔高原上蓝绿色高山湖泊+巨大银白色沙丘，蓝湖+白沙+远处雪山三种颜色对比魔幻如外星球 · <strong>玩法：</strong>下车步行5分钟到湖边→沿湖走走拍照→可爬沙丘(约50米高)俯拍湖面效果更好 · <strong>注意：</strong>海拔3300米别跑跳，风大注意防风保暖</span>
+                </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">15:00 - 16:00</div>
-                <div class="timeline-content">⭐ <strong>喀拉库勒湖</strong>（50元/人）：正对慕士塔格峰（7546m），雪山倒影。海拔3600m！</div>
+                <div class="timeline-content">
+                    ⭐ <strong>喀拉库勒湖</strong><br>
+                    <span style="font-size:12px;color:#666;">门票约50元/人 · 海拔3600米高原湖泊正对慕士塔格峰(7546米"冰山之父")，天气好时巨大雪山完美倒映在湖面上是帕米尔经典画面 · <strong>玩法：</strong>停车场步行到湖边→找角度拍慕士塔格峰倒影(正对雪山方向)→湖边有当地人牵骆驼牦牛拍照(50-100元，不骑可不理)→沿湖走走约45-60分钟 · <strong>注意：</strong>海拔3600米绝对不要跑跳，长辈不舒服在车里休息</span>
+                </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">16:00 - 19:00</div>
@@ -779,11 +804,17 @@
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">10:30 - 11:30</div>
-                <div class="timeline-content">⭐ <strong>盘龙古道</strong>（免费）：75公里600多个发卡弯！山顶观景台俯瞰全貌，路牌"今日走过了所有弯路，从此人生尽是坦途"合影。最高海拔约4200m。</div>
+                <div class="timeline-content">
+                    ⭐ <strong>盘龙古道</strong><br>
+                    <span style="font-size:12px;color:#666;">门票免费直接开上去 · 一条从山谷盘旋到山顶的公路，75公里内有600多个发卡弯从空中看像盘在山上的龙，抖音小红书超火网红公路 · <strong>玩法：</strong>开车盘旋上山(专心开，副驾后排录视频延时很震撼)→山顶观景台下车俯瞰整条盘龙公路拍照最佳点→在"今日走过了所有弯路，从此人生尽是坦途"路牌下合影→约1小时 · <strong>注意：</strong>弯道连续且急集中注意力，晕车吃药+坐前排看远处，最高海拔约4200米</span>
+                </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">11:30 - 12:00</div>
-                <div class="timeline-content">⭐ <strong>班迪尔蓝湖</strong>（免费）：宝石蓝色小众湖泊，路边停车拍照15-20分钟</div>
+                <div class="timeline-content">
+                    ⭐ <strong>班迪尔蓝湖</strong><br>
+                    <span style="font-size:12px;color:#666;">门票免费 · 藏在山谷的小众湖泊 · 矿物质呈宝石蓝色 · 路边停车拍照15-20分钟</span>
+                </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">12:00 - 16:30</div>
@@ -831,7 +862,10 @@
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">16:00 - 20:00</div>
-                <div class="timeline-content">⭐ <strong>赛里木湖</strong>（70元/人+自驾环湖100-150元/车，3人合计约360元）：大西洋最后一滴眼泪，自驾环湖70公里！逆时针方向，必停：西海草原、天鹅乐水。湖边风大气温10-15°C，<strong>穿外套！</strong></div>
+                <div class="timeline-content">
+                    ⭐ <strong>赛里木湖</strong><br>
+                    <span style="font-size:12px;color:#666;">门票70元/人+自驾环湖100-150元/车 · 可以开车进去自驾环湖70公里！ · 新疆海拔最高(2073米)面积最大的高山湖泊，被叫做"大西洋的最后一滴眼泪"——大西洋水汽的最东端 · 湖水蓝得不真实，6月湖边开满黄色紫色野花背景是雪山360度无死角 · <strong>玩法(3-4小时)：</strong>建议逆时针方向(先北岸下午光线从南照过来拍北岸最好看)→看到漂亮地方随时停车→必停：西海草原(湖边最大草地野花区拍照最佳)→天鹅乐水区域(碰运气看天鹅)→日落约21:30在西岸最美太阳落入雪山湖面 · <strong>注意：</strong>湖边风非常大气温约10-15°C必须穿外套甚至冲锋衣！</span>
+                </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">20:00 - 21:00</div>
@@ -863,15 +897,24 @@
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">11:00</div>
-                <div class="timeline-content">⭐ <strong>果子沟大桥</strong>（车览）：G30高速上自动经过，"中国最美高速公路桥"，不能停车，副驾/后排拍照</div>
+                <div class="timeline-content">
+                    ⭐ <strong>果子沟大桥</strong>（车览）<br>
+                    <span style="font-size:12px;color:#666;">免费 · G30高速上路过 · "中国最美高速桥"横跨200m深谷 · 不能停车副驾/后排拍照</span>
+                </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">11:30 - 12:30</div>
-                <div class="timeline-content">⭐ <strong>霍城薰衣草</strong>（35-45元/人）：中国普罗旺斯，6月盛花期。💡 公路旁也有免费薰衣草农田可拍！</div>
+                <div class="timeline-content">
+                    ⭐ <strong>霍城薰衣草</strong><br>
+                    <span style="font-size:12px;color:#666;">门票35-45元/人 · 中国最大的薰衣草种植基地被称为"中国的普罗旺斯"，6月是盛花期大片紫色花田一望无际空气中弥漫薰衣草香 · <strong>玩法：</strong>进园后沿步道走入花田→找花海+远处雪山的角度拍照→可买薰衣草精油/香包做伴手礼→约1小时 · <strong>省钱tip：</strong>高速到薰衣草园路上两边就有大片薰衣草农田路边停车免费拍效果差不多！ · <strong>注意：</strong>6月初刚进入盛花期可能没6月中旬满开但已经很紫很好看了</span>
+                </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">12:40 - 14:00</div>
-                <div class="timeline-content">⭐ <strong>霍尔果斯国门</strong>（约30元/人）：中哈边境口岸，看国门大楼、界碑。<strong>带好身份证！</strong></div>
+                <div class="timeline-content">
+                    ⭐ <strong>霍尔果斯国门</strong><br>
+                    <span style="font-size:12px;color:#666;">门票约30元/人 · 中国与哈萨克斯坦的边境口岸，西北最大的陆路口岸 · 能看到中哈界碑、国门大楼，对面就是哈萨克斯坦的土地很有"站在国境线上"的仪式感 · <strong>玩法：</strong>进景区→参观国门大楼→在中哈界碑前拍照打卡→有时间逛旁边霍尔果斯免税购物区(进口零食化妆品价格一般)→约1小时 · <strong>注意：</strong>带身份证景区入口要刷证，不要越过边境线标识</span>
+                </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">15:00 - 18:00</div>
@@ -905,7 +948,10 @@
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">11:30 - 18:00</div>
-                <div class="timeline-content">⭐ <strong>喀拉峻草原+阔克苏大峡谷</strong>：世界自然遗产，新疆最美草原！<br>猎鹰台（俯瞰人体草原）→ 阔克苏大峡谷 → 鳄鱼湾观景台 → 约17:30开始返回</div>
+                <div class="timeline-content">
+                    ⭐ <strong>喀拉峻草原+阔克苏大峡谷</strong><br>
+                    <span style="font-size:12px;color:#666;">门票80元/人+区间车90元/人=170元/人，不能自驾私家车停景区外必须坐区间车 · 联合国"世界自然遗产"，公认的**新疆最美草原** · 最出名的是**"人体草原"**——大地起伏的曲线如同人体线条一样柔美，翠绿草毯上点缀五颜六色野花背后是连绵雪山，6月是它最美的季节花开得最好绿得最浓 · <strong>玩法(约6小时)：</strong>坐区间车→先去东喀拉峻→猎鹰台观景台俯瞰"人体草原"全貌至少待1小时各角度拍照→坐景区内换乘车去阔克苏大峡谷方向→鳄鱼湾观景台(河流在峡谷底部拐出S形弯道酷似鳄鱼) → <strong>注意：</strong>末班车约19:00别玩过时间！穿冲锋衣草原风大白天20°C但风一吹就冷，穿运动鞋防泥，防晒必备，带零食水景区内吃的贵，部分地方没信号</span>
+                </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">18:30 - 19:30</div>
@@ -944,7 +990,10 @@
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">13:30 - 20:00</div>
-                <div class="timeline-content">⭐ <strong>唐布拉百里画廊</strong>（免费！）：100公里开放式景观公路<br>沿途必停：百花谷（野花海）→ 仙女湖（高山小湖）→ 唐布拉大草原 → 阿克塔斯瀑布</div>
+                <div class="timeline-content">
+                    ⭐ <strong>唐布拉百里画廊</strong><br>
+                    <span style="font-size:12px;color:#666;">完全免费！全程开放式景观公路没有大门没有围栏想停就停 · 一条长约100公里的天山山谷景观公路，本质是一片绵延100公里的河谷草原+雪岭云杉森林+雪山+溪流，6月正是野花盛开整条路像开在一幅油画里 · 与喀拉峻不同：喀拉峻是"俯瞰大草原"，唐布拉是"开在画里的公路旅行" · <strong>玩法(5-6小时慢慢开完100km)：</strong>开一段→看到漂亮的地方停车拍照玩耍→再开一段 · <strong>沿途必停：</strong>百花谷(6月野花海铺满山坡五颜六色20min)→仙女湖(高山小湖倒映松林15min)→唐布拉大草原(视野开阔大片绿色草原+远处雪山20min)→阿克塔斯瀑布(山间瀑布15min)→任意好看的地方随意停 · <strong>注意：</strong>沿途100km无加油站新源出发前加满！部分路段信号弱断网离线地图必备，路况二级公路弯道多限速40-60，牛羊横穿马路减速等待不要按喇叭</span>
+                </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">20:30</div>
@@ -981,7 +1030,10 @@
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">10:00 - 14:00</div>
-                <div class="timeline-content">⭐ <strong>独库公路北段</strong>（免费！）：中国最美公路！纵穿天山，4小时体验"一日四季"<br>草甸河谷 → <strong>哈希勒根达坂（3400m）</strong>🔥 6月雪墙！→ 天瀑 → 老虎口 → 防雪长廊 → 戈壁</div>
+                <div class="timeline-content">
+                    ⭐ <strong>独库公路北段</strong><br>
+                    <span style="font-size:12px;color:#666;">完全免费过路费 · 纵穿天山山脉的传奇公路(G217国道全长561公里)被誉为"中国最美公路" · 北段(乔尔玛→独山子150公里)是最险峻震撼的精华段——4小时内从绿色草甸翻越3400米雪山再一路下降到800米戈壁荒漠，体验"一日四季"的魔幻变化 · <strong>玩法(约4小时)：</strong>草甸河谷(出发后绿色草原小溪路边可停)→哈希勒根达坂(海拔3400米)🔥6月雪墙公路道路两边积雪高过车顶像开在雪的峡谷里有停车区下车玩雪拍照20分钟→天瀑(瀑布从山壁冲到公路上可能淋到车)→老虎口(悬崖绝壁路段往下看万丈深谷车上看)→防雪长廊(隧道式雪崩防护建筑很有末日感)→从雪山陡降到荒漠戈壁温差30°C · <strong>注意：</strong>出发前务必确认独库已开通(关注"独库公路"公众号)！150km无加油站无充电桩乔尔玛加满油！弯道多限速30-40有测速，部分路段可能单向放行需排队10-30分钟，晕车提前吃药，达坂停车拍雪墙穿冲锋衣风大很冷</span>
+                </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">14:00 - 14:30</div>
@@ -993,7 +1045,10 @@
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">17:30 - 20:30</div>
-                <div class="timeline-content">🛍️ 到达乌鲁木齐！推荐逛<strong>国际大巴扎</strong>：巴旦木、葡萄干、和田大枣、风干牛肉。<strong>砍价到开价的5-7折！</strong></div>
+                <div class="timeline-content">
+                    🛍️ <strong>国际大巴扎</strong><br>
+                    <span style="font-size:12px;color:#666;">门票免费 · 全世界规模最大的巴扎(集市)，伊斯兰建筑风格的巨大市场卖新疆所有特产，最后机会买买买 · <strong>买什么：</strong>巴旦木/核桃30-60元/斤(散装比盒装便宜)、葡萄干20-40元/斤(绿的酸甜红的纯甜)、和田大枣20-30元/斤(又大又甜)、风干牛肉80-120元/斤(可真空包装上飞机)、昆仑雪菊30-80元/罐(泡茶好喝) · <strong>砍价规则：</strong>开价的5-7折可以成交！别不好意思，二楼三楼比一楼便宜 · <strong>⚠️英吉沙小刀不能带上飞机也不能托运，别买！</strong></span>
+                </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">20:30 - 21:00</div>
@@ -1246,6 +1301,19 @@
             }
         };
 
+        // 折叠面板切换
+        function toggleGuide(el) {
+            const content = el.nextElementSibling;
+            const arrow = el.querySelector('.arrow');
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                arrow.classList.add('open');
+            } else {
+                content.style.display = 'none';
+                arrow.classList.remove('open');
+            }
+        }
+
         let routeLayers = [];
         let markerLayers = [];
 
@@ -1334,9 +1402,10 @@
                 const popupContent = `
                     <div style="text-align:center;">
                         <b style="font-size:14px;">${marker.name}</b><br>
+                        <div style="font-size:11px;color:#666;margin:4px 0;">📍 导航至：${navName}</div>
                         <a href="${amapUrl}" target="_blank" style="
                             display:inline-block;
-                            margin-top:8px;
+                            margin-top:6px;
                             padding:6px 16px;
                             background:#6366f1;
                             color:white;
@@ -1354,12 +1423,28 @@
             map.setView(dayData.center, dayData.zoom);
         }
 
-        function showDay(dayId) {
+        function showDay(dayId, btn) {
             document.querySelectorAll('.day-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
             
             document.getElementById(dayId).classList.add('active');
-            event.target.classList.add('active');
+            if (btn) {
+                btn.classList.add('active');
+            } else {
+                event.target.classList.add('active');
+            }
+            
+            const legendCard = document.getElementById('legend-card');
+            
+            // 切换到某一天时，收起总览面板并隐藏图例
+            if (dayId !== 'overview') {
+                const overview = document.getElementById('overview');
+                overview.querySelectorAll('.guide-content').forEach(el => el.style.display = 'none');
+                overview.querySelectorAll('.guide-title .arrow').forEach(el => el.classList.remove('open'));
+                legendCard.style.display = 'none';
+            } else {
+                legendCard.style.display = 'block';
+            }
             
             drawDayRoute(dayId);
         }
