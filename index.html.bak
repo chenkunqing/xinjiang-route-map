@@ -664,27 +664,27 @@
                 ],
                 markers: [
                     // Day1 抵达
-                    {name: 'Day1 ✈️ 喀什', coord: locations['喀什古城'], type: 'day1', navName: '喀什古城东门'},
+                    {name: 'Day1 ✈️ 喀什', coord: locations['喀什古城'], type: 'day1', navName: '喀什古城'},
                     // Day2 高原
-                    {name: 'Day2 ⛰️ 白沙湖', coord: locations['白沙湖'], type: 'day2', navName: '白沙湖景区'},
+                    {name: 'Day2 ⛰️ 白沙湖', coord: locations['白沙湖'], type: 'day2', navName: '白沙湖'},
                     {name: 'Day2 🏨 塔县', coord: locations['塔什库尔干县城'], type: 'day2', navName: '塔什库尔干县'},
                     // Day3 盘龙
-                    {name: 'Day3 🐉 盘龙古道', coord: locations['盘龙古道观景台'], type: 'day3', navName: '盘龙古道观景台'},
+                    {name: 'Day3 🐉 盘龙古道', coord: locations['盘龙古道观景台'], type: 'day3', navName: '盘龙古道'},
                     {name: 'Day3 ✈️ 飞乌鲁木齐', coord: locations['喀什古城'], type: 'day3', offset: [0, 25], navName: '喀什徕宁机场'},
                     // Day4 赛里木湖
                     {name: 'Day4 🚗 乌鲁木齐取车', coord: locations['乌鲁木齐地窝堡机场'], type: 'day4', navName: '乌鲁木齐地窝堡机场'},
-                    {name: 'Day4 💧 赛里木湖', coord: locations['赛里木湖'], type: 'day4', navName: '赛里木湖东门'},
+                    {name: 'Day4 💧 赛里木湖', coord: locations['赛里木湖'], type: 'day4', navName: '赛里木湖'},
                     {name: 'Day4 🏨 精河', coord: locations['精河县城'], type: 'day4', navName: '精河县'},
                     // Day5 薰衣草
-                    {name: 'Day5 💜 薰衣草', coord: locations['解忧公主薰衣草园'], type: 'day5', navName: '解忧公主薰衣草博物馆'},
-                    {name: 'Day5 🇨🇳 霍尔果斯', coord: locations['霍尔果斯国门景区'], type: 'day5', navName: '霍尔果斯国门景区游客中心'},
+                    {name: 'Day5 💜 薰衣草', coord: locations['解忧公主薰衣草园'], type: 'day5', navName: '解忧公主薰衣草园'},
+                    {name: 'Day5 🇨🇳 霍尔果斯', coord: locations['霍尔果斯国门景区'], type: 'day5', navName: '霍尔果斯国门景区'},
                     {name: 'Day5 🏨 特克斯', coord: locations['特克斯八卦城'], type: 'day5', navName: '特克斯县'},
                     // Day6 喀拉峻
-                    {name: 'Day6 🏔️ 喀拉峻', coord: locations['喀拉峻猎鹰台'], type: 'day6', navName: '喀拉峻国际旅游生态区游客中心'},
+                    {name: 'Day6 🏔️ 喀拉峻', coord: locations['喀拉峻猎鹰台'], type: 'day6', navName: '喀拉峻草原'},
                     // Day7 唐布拉
                     {name: 'Day7 ⛽ 新源加满', coord: locations['新源县城'], type: 'day7', navName: '新源县'},
                     {name: 'Day7 🌸 唐布拉', coord: locations['唐布拉百花谷'], type: 'day7', navName: '唐布拉百里画廊'},
-                    {name: 'Day7 🏨 乔尔玛', coord: locations['乔尔玛镇'], type: 'day7', navName: '乔尔玛服务区'},
+                    {name: 'Day7 🏨 乔尔玛', coord: locations['乔尔玛镇'], type: 'day7', navName: '乔尔玛'},
                     // Day8 独库
                     {name: 'Day8 ❄️ 独库雪墙', coord: locations['哈希勒根达坂'], type: 'day8', navName: '独库公路哈希勒根达坂'},
                     {name: 'Day8 🛍️ 大巴扎', coord: locations['乌鲁木齐国际大巴扎'], type: 'day8', navName: '乌鲁木齐国际大巴扎'},
@@ -700,10 +700,10 @@
                 markers: [
                     {name: '① 喀什徕宁机场 ✈️', coord: locations['喀什徕宁机场'], type: 'city', navName: '喀什徕宁机场'},
                     {name: '② 取车点 🚗', coord: locations['喀什徕宁机场'], type: 'city', offset: [0, 15], navName: '喀什徕宁机场'},
-                    {name: '🏨 喀什古城酒店', coord: locations['喀什酒店'], type: 'hotel', navName: '喀什古城东门'},
-                    {name: '③ 喀什古城东门', coord: locations['喀什古城东门'], type: 'scenic', navName: '喀什古城东门'},
-                    {name: '④ 彩虹巷 📸', coord: locations['彩虹巷'], type: 'scenic', navName: '喀什古城东门'},
-                    {name: '⑤ 百年老茶馆 🍵', coord: locations['百年老茶馆'], type: 'food', navName: '百年老茶馆'},
+                    {name: '🏨 喀什古城酒店', coord: locations['喀什酒店'], type: 'hotel', navName: '喀什古城'},
+                    {name: '③ 喀什古城东门', coord: locations['喀什古城东门'], type: 'scenic', navName: '喀什古城'},
+                    {name: '④ 彩虹巷 📸', coord: locations['彩虹巷'], type: 'scenic', navName: '喀什彩虹巷'},
+                    {name: '⑤ 百年老茶馆 🍵', coord: locations['百年老茶馆'], type: 'food', navName: '喀什百年老茶馆'},
                     {name: '⑥ 古城夜市 🍖', coord: locations['喀什夜市'], type: 'food', navName: '喀什古城夜市'}
                 ],
                 center: [39.47, 76.00],
@@ -712,12 +712,12 @@
             'day2': {
                 routes: [{points: [locations['喀什古城'], locations['盖孜边防检查站'], locations['白沙湖'], locations['喀拉库勒湖'], locations['慕士塔格峰观景台'], locations['塔合曼湿地'], locations['塔什库尔干县城']], color: colors.day, weight: 3, opacity: 0.9}],
                 markers: [
-                    {name: '① 喀什出发 ⛽加满', coord: locations['喀什古城'], type: 'city', navName: '喀什古城东门'},
+                    {name: '① 喀什出发 ⛽加满', coord: locations['喀什古城'], type: 'city', navName: '喀什古城'},
                     {name: '② 盖孜边防检查站 🪪', coord: locations['盖孜边防检查站'], type: 'city', navName: '盖孜边防检查站'},
-                    {name: '③ 白沙湖 ⭐⭐⭐⭐⭐', coord: locations['白沙湖'], type: 'scenic', navName: '白沙湖景区'},
+                    {name: '③ 白沙湖 ⭐⭐⭐⭐⭐', coord: locations['白沙湖'], type: 'scenic', navName: '白沙湖'},
                     {name: '④ 喀拉库勒湖 ⭐⭐⭐⭐⭐', coord: locations['喀拉库勒湖'], type: 'scenic', navName: '喀拉库勒湖'},
-                    {name: '⑤ 慕士塔格峰观景台 🏔️', coord: locations['慕士塔格峰观景台'], type: 'scenic', navName: '慕士塔格峰观景台'},
-                    {name: '⑥ 塔合曼湿地', coord: locations['塔合曼湿地'], type: 'scenic', navName: '塔合曼湿地观景台'},
+                    {name: '⑤ 慕士塔格峰观景台 🏔️', coord: locations['慕士塔格峰观景台'], type: 'scenic', navName: '慕士塔格峰'},
+                    {name: '⑥ 塔合曼湿地', coord: locations['塔合曼湿地'], type: 'scenic', navName: '塔合曼湿地'},
                     {name: '🏨 塔什库尔干县城', coord: locations['塔什库尔干县城'], type: 'hotel', navName: '塔什库尔干县'}
                 ],
                 center: [38.6, 75.3],
@@ -727,9 +727,9 @@
                 routes: [{points: [locations['塔什库尔干县城'], locations['瓦恰公路入口'], locations['盘龙古道观景台'], locations['人生尽是坦途路牌'], locations['班迪尔蓝湖'], locations['喀什机场还车点']], color: colors.day, weight: 3, opacity: 0.9}],
                 markers: [
                     {name: '🏨 塔什库尔干出发', coord: locations['塔什库尔干县城'], type: 'hotel', navName: '塔什库尔干县'},
-                    {name: '① 瓦恰公路入口', coord: locations['瓦恰公路入口'], type: 'city', navName: '瓦恰乡'},
-                    {name: '② 盘龙古道观景台 ⭐⭐⭐⭐⭐', coord: locations['盘龙古道观景台'], type: 'scenic', navName: '盘龙古道观景台'},
-                    {name: '③ "人生尽是坦途"路牌 📸', coord: locations['人生尽是坦途路牌'], type: 'scenic', navName: '盘龙古道观景台'},
+                    {name: '① 瓦恰公路入口', coord: locations['瓦恰公路入口'], type: 'city', navName: '瓦恰公路'},
+                    {name: '② 盘龙古道观景台 ⭐⭐⭐⭐⭐', coord: locations['盘龙古道观景台'], type: 'scenic', navName: '盘龙古道'},
+                    {name: '③ "人生尽是坦途"路牌 📸', coord: locations['人生尽是坦途路牌'], type: 'scenic', navName: '盘龙古道'},
                     {name: '④ 班迪尔蓝湖 ⭐⭐⭐⭐', coord: locations['班迪尔蓝湖'], type: 'scenic', navName: '班迪尔蓝湖'},
                     {name: '⑤ 喀什还车+晚餐 🍗', coord: locations['喀什机场还车点'], type: 'food', navName: '喀什徕宁机场'},
                     {name: '⑥ 飞乌鲁木齐 ✈️', coord: locations['喀什机场还车点'], type: 'city', offset: [0, 20], navName: '喀什徕宁机场'}
@@ -745,10 +745,10 @@
                     {name: '② 昌吉服务区', coord: locations['昌吉服务区'], type: 'city', navName: '昌吉服务区'},
                     {name: '③ 呼图壁服务区', coord: locations['呼图壁服务区'], type: 'city', navName: '呼图壁服务区'},
                     {name: '④ 石河子服务区', coord: locations['石河子服务区'], type: 'city', navName: '石河子服务区'},
-                    {name: '⑤ 赛里木湖东门', coord: locations['赛里木湖东门'], type: 'scenic', navName: '赛里木湖东门'},
+                    {name: '⑤ 赛里木湖东门', coord: locations['赛里木湖东门'], type: 'scenic', navName: '赛里木湖'},
                     {name: '⑥ 月亮湾 ⭐⭐⭐⭐⭐', coord: locations['赛里木湖月亮湾'], type: 'scenic', navName: '赛里木湖月亮湾'},
-                    {name: '⑦ 西海草原 🌸', coord: locations['赛里木湖西海草原'], type: 'scenic', navName: '赛里木湖东门'},
-                    {name: '⑧ 天鹅乐水 🦢', coord: locations['赛里木湖天鹅乐水'], type: 'scenic', navName: '赛里木湖东门'},
+                    {name: '⑦ 西海草原 🌸', coord: locations['赛里木湖西海草原'], type: 'scenic', navName: '赛里木湖'},
+                    {name: '⑧ 天鹅乐水 🦢', coord: locations['赛里木湖天鹅乐水'], type: 'scenic', navName: '赛里木湖'},
                     {name: '🏨 精河县城', coord: locations['精河县城'], type: 'hotel', navName: '精河县'}
                 ],
                 center: [44.3, 82.5],
@@ -758,10 +758,10 @@
                 routes: [{points: [locations['精河酒店'], locations['果子沟大桥'], locations['解忧公主薰衣草园'], locations['霍尔果斯国门景区'], locations['特克斯八卦城']], color: colors.day, weight: 3, opacity: 0.9}],
                 markers: [
                     {name: '🏨 精河酒店出发', coord: locations['精河酒店'], type: 'hotel', navName: '精河县'},
-                    {name: '① 果子沟大桥 🌉（车览）', coord: locations['果子沟大桥'], type: 'scenic', navName: '果子沟大桥观景平台'},
-                    {name: '② 霍城薰衣草园 💜', coord: locations['解忧公主薰衣草园'], type: 'scenic', navName: '解忧公主薰衣草博物馆'},
-                    {name: '③ 霍尔果斯国门 🇨🇳', coord: locations['霍尔果斯国门景区'], type: 'scenic', navName: '霍尔果斯国门景区游客中心'},
-                    {name: '④ 午餐+出发 🍜', coord: locations['霍尔果斯口岸'], type: 'food', navName: '霍尔果斯口岸免税店'},
+                    {name: '① 果子沟大桥 🌉（车览）', coord: locations['果子沟大桥'], type: 'scenic', navName: '果子沟大桥'},
+                    {name: '② 霍城薰衣草园 💜', coord: locations['解忧公主薰衣草园'], type: 'scenic', navName: '解忧公主薰衣草园'},
+                    {name: '③ 霍尔果斯国门 🇨🇳', coord: locations['霍尔果斯国门景区'], type: 'scenic', navName: '霍尔果斯国门景区'},
+                    {name: '④ 午餐+出发 🍜', coord: locations['霍尔果斯口岸'], type: 'food', navName: '霍尔果斯口岸'},
                     {name: '🏨 特克斯八卦城', coord: locations['特克斯八卦城'], type: 'hotel', navName: '特克斯县'},
                     {name: '⑤ 离街夜市 🍖', coord: locations['特克斯离街'], type: 'food', navName: '特克斯离街'}
                 ],
@@ -772,11 +772,11 @@
                 routes: [{points: [locations['特克斯酒店'], locations['喀拉峻景区游客中心'], locations['喀拉峻猎鹰台'], locations['喀拉峻人体草原'], locations['阔克苏大峡谷'], locations['鳄鱼湾观景台'], locations['特克斯酒店']], color: colors.day, weight: 3, opacity: 0.9}],
                 markers: [
                     {name: '🏨 特克斯酒店出发', coord: locations['特克斯酒店'], type: 'hotel', navName: '特克斯县'},
-                    {name: '① 喀拉峻游客中心 🎫', coord: locations['喀拉峻景区游客中心'], type: 'city', navName: '喀拉峻国际旅游生态区游客中心'},
-                    {name: '② 猎鹰台 ⭐⭐⭐⭐⭐', coord: locations['喀拉峻猎鹰台'], type: 'scenic', navName: '喀拉峻猎鹰台'},
-                    {name: '③ 人体草原 🏔️', coord: locations['喀拉峻人体草原'], type: 'scenic', navName: '喀拉峻人体草原观景点'},
-                    {name: '④ 阔克苏大峡谷', coord: locations['阔克苏大峡谷'], type: 'scenic', navName: '阔克苏大峡谷景区'},
-                    {name: '⑤ 鳄鱼湾观景台 🔥', coord: locations['鳄鱼湾观景台'], type: 'scenic', navName: '鳄鱼湾观景台'},
+                    {name: '① 喀拉峻游客中心 🎫', coord: locations['喀拉峻景区游客中心'], type: 'city', navName: '喀拉峻景区'},
+                    {name: '② 猎鹰台 ⭐⭐⭐⭐⭐', coord: locations['喀拉峻猎鹰台'], type: 'scenic', navName: '喀拉峻草原猎鹰台'},
+                    {name: '③ 人体草原 🏔️', coord: locations['喀拉峻人体草原'], type: 'scenic', navName: '喀拉峻人体草原'},
+                    {name: '④ 阔克苏大峡谷', coord: locations['阔克苏大峡谷'], type: 'scenic', navName: '阔克苏大峡谷'},
+                    {name: '⑤ 鳄鱼湾观景台 🔥', coord: locations['鳄鱼湾观景台'], type: 'scenic', navName: '鳄鱼湾'},
                     {name: '⑥ 返回特克斯晚餐 🍗', coord: locations['特克斯酒店'], type: 'food', offset: [0, 15], navName: '特克斯县'}
                 ],
                 center: [43.15, 81.92],
@@ -790,9 +790,9 @@
                     {name: '② 午餐 🍜', coord: locations['新源午餐点'], type: 'food', navName: '新源县'},
                     {name: '③ 百花谷 🌸', coord: locations['唐布拉百花谷'], type: 'scenic', navName: '唐布拉百花谷'},
                     {name: '④ 仙女湖 💧', coord: locations['唐布拉仙女湖'], type: 'scenic', navName: '唐布拉仙女湖'},
-                    {name: '⑤ 唐布拉大草原 ⭐⭐⭐⭐⭐', coord: locations['唐布拉大草原'], type: 'scenic', navName: '唐布拉草原游客中心'},
+                    {name: '⑤ 唐布拉大草原 ⭐⭐⭐⭐⭐', coord: locations['唐布拉大草原'], type: 'scenic', navName: '唐布拉草原'},
                     {name: '⑥ 阿克塔斯瀑布 🌊', coord: locations['阿克塔斯瀑布'], type: 'scenic', navName: '阿克塔斯瀑布'},
-                    {name: '🏨 乔尔玛镇住宿', coord: locations['乔尔玛镇'], type: 'hotel', navName: '乔尔玛服务区'},
+                    {name: '🏨 乔尔玛镇住宿', coord: locations['乔尔玛镇'], type: 'hotel', navName: '乔尔玛'},
                     {name: '⑦ 烈士纪念碑 🎖️', coord: locations['独库公路烈士纪念碑'], type: 'scenic', navName: '独库公路烈士纪念碑'}
                 ],
                 center: [43.4, 84.1],
@@ -801,9 +801,9 @@
             'day8': {
                 routes: [{points: [locations['乔尔玛镇'], locations['哈希勒根达坂'], locations['哈希勒根雪墙'], locations['天瀑'], locations['老虎口'], locations['防雪长廊'], locations['独山子城区'], locations['乌鲁木齐国际大巴扎'], locations['乌鲁木齐机场还车点']], color: colors.day, weight: 3, opacity: 0.9}],
                 markers: [
-                    {name: '🏨 乔尔玛出发 ⛽加满+干粮', coord: locations['乔尔玛镇'], type: 'hotel', navName: '乔尔玛服务区'},
-                    {name: '① 哈希勒根达坂 (3400m) ❄️', coord: locations['哈希勒根达坂'], type: 'scenic', navName: '哈希勒根达坂观景台'},
-                    {name: '② 6月雪墙 🔥', coord: locations['哈希勒根雪墙'], type: 'scenic', navName: '哈希勒根达坂观景台'},
+                    {name: '🏨 乔尔玛出发 ⛽加满+干粮', coord: locations['乔尔玛镇'], type: 'hotel', navName: '乔尔玛'},
+                    {name: '① 哈希勒根达坂 (3400m) ❄️', coord: locations['哈希勒根达坂'], type: 'scenic', navName: '哈希勒根达坂'},
+                    {name: '② 6月雪墙 🔥', coord: locations['哈希勒根雪墙'], type: 'scenic', navName: '哈希勒根达坂'},
                     {name: '③ 天瀑 🌊', coord: locations['天瀑'], type: 'scenic', navName: '独库公路天瀑'},
                     {name: '④ 老虎口 ⚠️', coord: locations['老虎口'], type: 'scenic', navName: '独库公路老虎口'},
                     {name: '⑤ 防雪长廊', coord: locations['防雪长廊'], type: 'scenic', navName: '独库公路防雪长廊'},
