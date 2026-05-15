@@ -409,27 +409,7 @@
         }
 
         /* Desktop */
-        @media (min-width: 768px) {
-            .header { padding: 40px 20px; }
-            .header h1 { font-size: 32px; }
-            .header p { font-size: 16px; }
-            .header-stats { gap: 40px; }
-            .stat-value { font-size: 28px; }
-            
-            #map { height: 500px; min-height: 500px; max-height: none; }
-            
-            .legend-card { margin: 0 24px 20px; padding: 20px; }
-            .legend-grid { grid-template-columns: repeat(3, 1fr); }
-            
-            .tabs-container { margin: 0 24px; }
-            .tabs { padding: 12px; gap: 8px; }
-            .tab { padding: 12px 20px; font-size: 14px; }
-            
-            .day-content { padding: 24px; }
-            .day-title { font-size: 22px; }
-            
-            .route-card { margin: 16px 24px; padding: 20px; }
-        }
+        
 
         /* Animations */
         .pulse {
@@ -456,7 +436,133 @@
             margin: 12px 16px;
             font-size: 13px;
         }
-    </style>
+
+        /* ========== 移动端适配 ========== */
+        @media (max-width: 768px) {
+            /* Header */
+            .header {
+                padding: 16px 12px;
+            }
+            .header h1 {
+                font-size: 18px;
+                flex-wrap: wrap;
+            }
+            .header p {
+                font-size: 12px;
+            }
+            .header-stats {
+                gap: 16px;
+            }
+            .stat-value {
+                font-size: 16px;
+            }
+            .stat-label {
+                font-size: 10px;
+            }
+
+            /* 地图全屏 */
+            .map-container {
+                padding: 0;
+            }
+            .map-wrapper {
+                border-radius: 0;
+            }
+            #map {
+                height: 45vh !important;
+                min-height: 300px;
+            }
+
+            /* Tabs横向滚动 */
+            .tabs-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .tabs-container::-webkit-scrollbar {
+                display: none;
+            }
+            .tabs {
+                flex-wrap: nowrap;
+                min-width: max-content;
+                padding: 0 8px;
+            }
+            .tab {
+                padding: 10px 16px;
+                font-size: 13px;
+                white-space: nowrap;
+            }
+
+            /* 内容区域 */
+            .day-content {
+                padding: 12px;
+            }
+            .day-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .day-title {
+                font-size: 18px;
+            }
+            .day-subtitle {
+                font-size: 13px;
+            }
+
+            /* 路线卡片 */
+            .route-card {
+                padding: 12px;
+                margin-bottom: 12px;
+            }
+            .timeline-item {
+                padding-left: 20px;
+            }
+            .timeline-time {
+                font-size: 12px;
+                min-width: 50px;
+            }
+
+            /* 图例 */
+            .legend-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .legend-card {
+                padding: 10px;
+            }
+
+            /* 提示框 */
+            .tip, .warning {
+                margin: 12px 0;
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+
+            /* Footer */
+            .footer {
+                padding: 12px;
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 {
+                font-size: 16px;
+            }
+            .stat-value {
+                font-size: 14px;
+            }
+            #map {
+                height: 40vh !important;
+            }
+            .tab {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            .legend-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
 </head>
 <body>
     <div class="header">
