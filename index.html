@@ -5,154 +5,571 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>新疆9天自驾路线图 - 2026.6.2-6.10</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; -webkit-tap-highlight-color: transparent; }
-        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; text-align: center; }
-        .header h1 { font-size: 20px; margin-bottom: 5px; }
-        .header p { opacity: 0.9; font-size: 13px; }
-        #map { height: 45vh; min-height: 250px; max-height: 400px; width: 100%; }
-        .legend { background: white; padding: 12px; margin: 8px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .legend h3 { margin-bottom: 8px; color: #333; font-size: 14px; }
-        .legend-item { display: flex; align-items: center; margin: 4px 0; font-size: 12px; }
-        .legend-color { width: 16px; height: 4px; margin-right: 8px; }
-        .tabs { display: flex; background: white; padding: 8px; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-        .tabs::-webkit-scrollbar { display: none; }
-        .tab { padding: 6px 12px; background: #f0f0f0; border: none; border-radius: 16px; cursor: pointer; white-space: nowrap; font-size: 12px; flex-shrink: 0; }
-        .tab.active { background: #667eea; color: white; }
-        .day-content { display: none; padding: 12px; background: white; margin: 8px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-height: 40vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-        .day-content.active { display: block; }
-        .day-content h2 { font-size: 16px; margin-bottom: 10px; color: #333; }
-        .route-item { padding: 10px; border-left: 3px solid #667eea; margin: 8px 0; background: #f8f9fa; border-radius: 0 4px 4px 0; }
-        .route-item h4 { color: #333; margin-bottom: 5px; font-size: 13px; }
-        .route-item p { color: #666; font-size: 13px; line-height: 1.5; }
-        .highlight { background: #fff3cd; padding: 10px; border-radius: 5px; margin: 10px 0; border-left: 3px solid #ffc107; font-size: 12px; }
-        .highlight ul { padding-left: 18px; }
-        .highlight li { margin: 3px 0; }
-        .footer { text-align: center; padding: 15px; color: #666; font-size: 11px; }
-        .timeline { margin: 10px 0; }
-        .timeline-item { margin: 6px 0; }
-        .timeline-time { font-weight: bold; color: #667eea; font-size: 12px; margin-bottom: 2px; }
-        .timeline-content { color: #444; font-size: 13px; line-height: 1.5; }
-        .tip { background: #e8f5e9; padding: 10px; border-radius: 5px; margin: 10px 0; border-left: 3px solid #4caf50; font-size: 12px; }
-        .warning { background: #fff3e0; padding: 10px; border-radius: 5px; margin: 10px 0; border-left: 3px solid #ff9800; font-size: 12px; }
-        .warning ul { padding-left: 18px; }
-        .warning li { margin: 3px 0; }
-        
-        /* 桌面端适配 */
-        @media (min-width: 768px) {
-            .header { padding: 20px; }
-            .header h1 { font-size: 28px; }
-            .header p { font-size: 15px; }
-            #map { height: 500px; min-height: 500px; max-height: none; }
-            .legend { margin: 10px 15px; }
-            .legend h3 { font-size: 16px; }
-            .legend-item { font-size: 14px; margin: 5px 0; }
-            .tabs { padding: 10px; gap: 6px; }
-            .tab { padding: 8px 18px; font-size: 14px; }
-            .day-content { margin: 10px 15px; padding: 15px; max-height: 500px; }
-            .day-content h2 { font-size: 20px; }
-            .route-item p { font-size: 14px; }
-            .timeline-item { display: flex; margin: 8px 0; }
-            .timeline-time { width: 110px; font-size: 13px; }
-            .timeline-content { font-size: 14px; }
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #0ea5e9;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --light: #f8fafc;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --radius: 16px;
+            --radius-sm: 8px;
         }
-        
-        /* 小屏手机优化 */
-        @media (max-width: 375px) {
-            .header h1 { font-size: 18px; }
-            .tab { padding: 5px 10px; font-size: 11px; }
-            .day-content { padding: 10px; }
-            .route-item { padding: 8px; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6366f1 100%);
+            color: white;
+            padding: 28px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .header-stats {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 16px;
+            position: relative;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        /* Map Container */
+        .map-container {
+            padding: 16px;
+        }
+
+        .map-wrapper {
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            background: white;
+        }
+
+        #map {
+            height: 45vh;
+            min-height: 280px;
+            max-height: 400px;
+            width: 100%;
+        }
+
+        /* Legend */
+        .legend-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 16px;
+            margin: 0 16px 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .legend-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 6px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .legend-markers {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #f1f5f9;
+            flex-wrap: wrap;
+        }
+
+        .legend-marker {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        /* Tabs */
+        .tabs-container {
+            background: white;
+            margin: 0 16px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .tabs {
+            display: flex;
+            overflow-x: auto;
+            padding: 8px;
+            gap: 6px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab {
+            padding: 10px 16px;
+            background: var(--light);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gray);
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .tab:hover {
+            background: #e2e8f0;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Day Content */
+        .day-content {
+            display: none;
+            padding: 16px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .day-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .day-header {
+            margin-bottom: 16px;
+        }
+
+        .day-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 4px;
+        }
+
+        .day-subtitle {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary-light), var(--primary));
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 12px 16px;
+            background: white;
+            border-radius: var(--radius-sm);
+            margin-bottom: 10px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -22px;
+            top: 18px;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary-light);
+        }
+
+        .timeline-time {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .timeline-content {
+            font-size: 13px;
+            color: var(--dark);
+            line-height: 1.5;
+        }
+
+        .timeline-content strong {
+            color: var(--dark);
+        }
+
+        /* Special Blocks */
+        .highlight, .tip, .warning {
+            padding: 14px 16px;
+            border-radius: var(--radius-sm);
+            margin: 12px 0;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid var(--warning);
+            border-radius: var(--radius-sm);
+        }
+
+        .tip {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-left: 4px solid var(--success);
+            border-radius: var(--radius-sm);
+        }
+
+        .warning {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-left: 4px solid var(--danger);
+            border-radius: var(--radius-sm);
+        }
+
+        .highlight strong, .tip strong, .warning strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .highlight ul, .warning ul {
+            padding-left: 18px;
+            margin: 8px 0 0;
+        }
+
+        .highlight li, .warning li {
+            margin: 4px 0;
+        }
+
+        /* Route Card */
+        .route-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 16px;
+            margin: 12px 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .route-card h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .route-card h4 .tag {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .tag-south { background: #fee2e2; color: #dc2626; }
+        .tag-north { background: #dbeafe; color: #2563eb; }
+
+        .route-card p {
+            font-size: 13px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 24px 16px;
+            color: var(--gray);
+            font-size: 12px;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Desktop */
+        @media (min-width: 768px) {
+            .header { padding: 40px 20px; }
+            .header h1 { font-size: 32px; }
+            .header p { font-size: 16px; }
+            .header-stats { gap: 40px; }
+            .stat-value { font-size: 28px; }
+            
+            #map { height: 500px; min-height: 500px; max-height: none; }
+            
+            .legend-card { margin: 0 24px 20px; padding: 20px; }
+            .legend-grid { grid-template-columns: repeat(3, 1fr); }
+            
+            .tabs-container { margin: 0 24px; }
+            .tabs { padding: 12px; gap: 8px; }
+            .tab { padding: 12px 20px; font-size: 14px; }
+            
+            .day-content { padding: 24px; }
+            .day-title { font-size: 22px; }
+            
+            .route-card { margin: 16px 24px; padding: 20px; }
+        }
+
+        /* Animations */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Custom Leaflet Styles */
+        .custom-label {
+            background: transparent !important;
+            border: none !important;
+        }
+
+        .leaflet-popup-content-wrapper {
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .leaflet-popup-content {
+            margin: 12px 16px;
+            font-size: 13px;
         }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>🗺️ 新疆9天自驾路线图</h1>
-        <p>2026.6.2-6.10 | 3人出行 | 两人轮流开车</p>
-    </div>
-    
-    <div id="map"></div>
-    
-    <div class="legend">
-        <h3>📍 每日路线颜色</h3>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #FF6B6B;"></div>
-            <span>Day1 抵达喀什</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #4ECDC4;"></div>
-            <span>Day2 喀什→塔县</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #45B7D1;"></div>
-            <span>Day3 塔县→盘龙→飞乌鲁木齐</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #96CEB4;"></div>
-            <span>Day4 乌鲁木齐→赛里木湖</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #FFEAA7;"></div>
-            <span>Day5 薰衣草→霍尔果斯→特克斯</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #DDA0DD;"></div>
-            <span>Day6 喀拉峻草原</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #FFB347;"></div>
-            <span>Day7 唐布拉百里画廊</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #87CEEB;"></div>
-            <span>Day8 独库公路→乌鲁木齐</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #98D8C8;"></div>
-            <span>Day9 返程</span>
-        </div>
-        <hr style="margin: 10px 0;">
-        <div class="legend-item">
-            <div class="legend-color" style="background: #ff7043; width: 12px; height: 12px; border-radius: 50%;"></div>
-            <span>🏨 酒店/住宿</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #ffa726; width: 12px; height: 12px; border-radius: 50%;"></div>
-            <span>⭐ 景点</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #66bb6a; width: 12px; height: 12px; border-radius: 50%;"></div>
-            <span>🍴 餐饮</span>
+        <p>2026.6.2 - 6.10 · 3人出行 · 两人轮流开车</p>
+        <div class="header-stats">
+            <div class="stat-item">
+                <div class="stat-value">9</div>
+                <div class="stat-label">天</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">3000+</div>
+                <div class="stat-label">公里</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">南疆+北疆</div>
+                <div class="stat-label">大环线</div>
+            </div>
         </div>
     </div>
     
-    <div class="tabs">
-        <button class="tab active" onclick="showDay('overview')">总览</button>
-        <button class="tab" onclick="showDay('day1')">Day1 6/2</button>
-        <button class="tab" onclick="showDay('day2')">Day2 6/3</button>
-        <button class="tab" onclick="showDay('day3')">Day3 6/4</button>
-        <button class="tab" onclick="showDay('day4')">Day4 6/5</button>
-        <button class="tab" onclick="showDay('day5')">Day5 6/6</button>
-        <button class="tab" onclick="showDay('day6')">Day6 6/7</button>
-        <button class="tab" onclick="showDay('day7')">Day7 6/8</button>
-        <button class="tab" onclick="showDay('day8')">Day8 6/9</button>
-        <button class="tab" onclick="showDay('day9')">Day9 6/10</button>
+    <div class="map-container">
+        <div class="map-wrapper">
+            <div id="map"></div>
+        </div>
     </div>
     
+    <div class="legend-card">
+        <div class="legend-title">📍 每日路线</div>
+        <div class="legend-grid">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FF6B6B;"></div>
+                <span>Day1 喀什</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #4ECDC4;"></div>
+                <span>Day2 塔县</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #45B7D1;"></div>
+                <span>Day3 盘龙</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #96CEB4;"></div>
+                <span>Day4 赛湖</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FFEAA7;"></div>
+                <span>Day5 伊犁</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #DDA0DD;"></div>
+                <span>Day6 喀拉峻</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FFB347;"></div>
+                <span>Day7 唐布拉</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #87CEEB;"></div>
+                <span>Day8 独库</span>
+            </div>
+        </div>
+        <div class="legend-markers">
+            <div class="legend-marker">
+                <div class="legend-dot" style="background: #ff7043;"></div>
+                <span>住宿</span>
+            </div>
+            <div class="legend-marker">
+                <div class="legend-dot" style="background: #ffa726;"></div>
+                <span>景点</span>
+            </div>
+            <div class="legend-marker">
+                <div class="legend-dot" style="background: #66bb6a;"></div>
+                <span>餐饮</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tabs-container">
+        <div class="tabs">
+            <button class="tab active" onclick="showDay('overview')">🗺️ 总览</button>
+            <button class="tab" onclick="showDay('day1')">Day1 6/2</button>
+            <button class="tab" onclick="showDay('day2')">Day2 6/3</button>
+            <button class="tab" onclick="showDay('day3')">Day3 6/4</button>
+            <button class="tab" onclick="showDay('day4')">Day4 6/5</button>
+            <button class="tab" onclick="showDay('day5')">Day5 6/6</button>
+            <button class="tab" onclick="showDay('day6')">Day6 6/7</button>
+            <button class="tab" onclick="showDay('day7')">Day7 6/8</button>
+            <button class="tab" onclick="showDay('day8')">Day8 6/9</button>
+            <button class="tab" onclick="showDay('day9')">Day9 6/10</button>
+        </div>
+    </div>
+    
+    <!-- Overview -->
     <div id="overview" class="day-content active">
-        <h2>🗓️ 9天行程总览</h2>
-        <div class="route-item">
-            <h4>第一段：南疆帕米尔（6/2-6/4）喀什租还</h4>
-            <p>喀什古城 → G314高原线 → 白沙湖 → 喀拉库勒湖 → 塔什库尔干 → 盘龙古道 → 班迪尔蓝湖 → 喀什机场 → ✈️ 乌鲁木齐</p>
+        <div class="day-header">
+            <div class="day-title">🗓️ 9天行程总览</div>
+            <div class="day-subtitle">南疆帕米尔 + 北疆伊犁环线</div>
         </div>
-        <div class="route-item">
-            <h4>第二段：北疆伊犁环线（6/5-6/9）乌鲁木齐租还</h4>
-            <p>乌鲁木齐 → 赛里木湖 → 精河 → 果子沟大桥 → 霍城薰衣草 → 霍尔果斯国门 → 特克斯 → 喀拉峻 → 新源 → 唐布拉 → 乔尔玛 → 独库公路 → 独山子 → 乌鲁木齐</p>
+        
+        <div class="route-card">
+            <h4><span class="tag tag-south">南疆</span>第一段：帕米尔高原（6/2-6/4）</h4>
+            <p>喀什古城 → G314高原线 → 白沙湖 → 喀拉库勒湖 → 塔什库尔干 → 盘龙古道 → 班迪尔蓝湖 → 喀什 ✈️ 乌鲁木齐</p>
         </div>
+        
+        <div class="route-card">
+            <h4><span class="tag tag-north">北疆</span>第二段：伊犁环线（6/5-6/9）</h4>
+            <p>乌鲁木齐 → 赛里木湖 → 果子沟 → 霍城薰衣草 → 霍尔果斯 → 特克斯 → 喀拉峻 → 唐布拉 → 独库公路 → 乌鲁木齐</p>
+        </div>
+        
         <div class="highlight">
-            <strong>⛽ 三个加油盲区（务必加满！）：</strong>
+            <strong>⛽ 三个加油盲区（务必加满！）</strong>
             <ul>
                 <li>G314高原段（喀什→塔县）：中间无加油站</li>
                 <li>唐布拉段（新源→乔尔玛）：100km无加油站</li>
@@ -161,43 +578,51 @@
         </div>
     </div>
     
+    <!-- Day 1 -->
     <div id="day1" class="day-content">
-        <h2>Day 1 (6/2 周二)：抵达喀什 — 夜游古城</h2>
+        <div class="day-header">
+            <div class="day-title">Day 1 · 6月2日 周二</div>
+            <div class="day-subtitle">抵达喀什 · 夜游古城</div>
+        </div>
         <div class="timeline">
             <div class="timeline-item">
-                <div class="timeline-time">16:10-16:30</div>
+                <div class="timeline-time">16:10 - 16:30</div>
                 <div class="timeline-content">📍 落地喀什徕宁机场，取行李</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">16:30-17:00</div>
+                <div class="timeline-time">16:30 - 17:00</div>
                 <div class="timeline-content">🚗 取车 - 比亚迪宋Pro，检查车况、拍照留证</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">17:00-18:00</div>
+                <div class="timeline-time">17:00 - 18:00</div>
                 <div class="timeline-content">🏨 入住喀什古城附近酒店（如家/汉庭人民路店，约150-200元/间）</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">20:00-22:30</div>
+                <div class="timeline-time">20:00 - 22:30</div>
                 <div class="timeline-content">⭐ 喀什古城夜游：东门 → 彩虹巷 → 百年老茶馆（15元/壶）→ 古城灯光（21:00亮灯）</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">22:00-22:30</div>
+                <div class="timeline-time">22:00 - 22:30</div>
                 <div class="timeline-content">🍴 古城夜市：烤包子(3-5元)、缸子肉(25-35元)、鸽子汤(30元)、酸奶刨冰(10元)，人均40-60元</div>
             </div>
         </div>
         <div class="tip">
-            <strong>💡 提示：</strong>喀什古城免费全天开放，晚上亮灯后最美。巷子多易迷路，跟着人流走。
+            <strong>💡 提示</strong>喀什古城免费全天开放，晚上亮灯后最美。巷子多易迷路，跟着人流走。
         </div>
         <div class="warning">
-            <strong>🏨 住宿：</strong>喀什古城附近连锁酒店，约150-200元/间×2间
+            <strong>🏨 住宿</strong>喀什古城附近连锁酒店，约150-200元/间×2间
         </div>
     </div>
     
+    <!-- Day 2 -->
     <div id="day2" class="day-content">
-        <h2>Day 2 (6/3 周三)：喀什 → 白沙湖 → 喀拉库勒湖 → 塔什库尔干（约5.5h）</h2>
+        <div class="day-header">
+            <div class="day-title">Day 2 · 6月3日 周三</div>
+            <div class="day-subtitle">喀什 → 白沙湖 → 喀拉库勒湖 → 塔县</div>
+        </div>
         <div class="timeline">
             <div class="timeline-item">
-                <div class="timeline-time">10:00-10:30</div>
+                <div class="timeline-time">10:00 - 10:30</div>
                 <div class="timeline-content">🍴 睡到自然醒，酒店附近吃早午餐（馕包肉或烤包子+奶茶）。<strong>加满油出发！</strong></div>
             </div>
             <div class="timeline-item">
@@ -205,28 +630,28 @@
                 <div class="timeline-content">🚗 出发！导航"塔什库尔干"，走G314中巴友谊公路</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">13:00-13:45</div>
+                <div class="timeline-time">13:00 - 13:45</div>
                 <div class="timeline-content">⭐ <strong>白沙湖</strong>（免费）：G314路边约160km处，蓝湖+白沙+雪山，像外星球。海拔3300m，别跑跳。</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">15:00-16:00</div>
-                <div class="timeline-content">⭐ <strong>喀拉库勒湖</strong>（50元/人）：正对慕士塔格峰（7546m），雪山倒影。海拔3600m！61岁长辈若不适就在车里休息。</div>
+                <div class="timeline-time">15:00 - 16:00</div>
+                <div class="timeline-content">⭐ <strong>喀拉库勒湖</strong>（50元/人）：正对慕士塔格峰（7546m），雪山倒影。海拔3600m！</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">16:00-19:00</div>
+                <div class="timeline-time">16:00 - 19:00</div>
                 <div class="timeline-content">🚗 继续沿G314行驶约120km到塔县，限速40-60</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">19:00-19:30</div>
+                <div class="timeline-time">19:00 - 19:30</div>
                 <div class="timeline-content">🏨 入住塔什库尔干县城（前海大酒店或K2青旅标间，约150-200元/间）</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">19:30-20:30</div>
+                <div class="timeline-time">19:30 - 20:30</div>
                 <div class="timeline-content">🍴 县城晚餐：手抓饭、拌面、大盘鸡，人均30-50元。<strong>别吃太饱！高原消化慢。</strong></div>
             </div>
         </div>
         <div class="warning">
-            <strong>⚠️ 高原住宿提醒（海拔3100m）：</strong>
+            <strong>⚠️ 高原住宿提醒（海拔3100m）</strong>
             <ul>
                 <li>❌ 当晚绝对不要洗澡！（容易缺氧头痛）</li>
                 <li>✅ 多喝温水，动作放慢</li>
@@ -235,51 +660,59 @@
         </div>
     </div>
     
+    <!-- Day 3 -->
     <div id="day3" class="day-content">
-        <h2>Day 3 (6/4 周四)：塔县 → 盘龙古道 → 班迪尔蓝湖 → 喀什 → ✈️ 乌鲁木齐（约5.5h+飞行）</h2>
+        <div class="day-header">
+            <div class="day-title">Day 3 · 6月4日 周四</div>
+            <div class="day-subtitle">塔县 → 盘龙古道 → 班迪尔蓝湖 → 喀什 → 飞乌鲁木齐</div>
+        </div>
         <div class="timeline">
             <div class="timeline-item">
                 <div class="timeline-time">10:00</div>
                 <div class="timeline-content">🍴 起床早餐，退房出发。导航"盘龙古道"或"瓦恰公路"</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">10:30-11:30</div>
+                <div class="timeline-time">10:30 - 11:30</div>
                 <div class="timeline-content">⭐ <strong>盘龙古道</strong>（免费）：75公里600多个发卡弯！山顶观景台俯瞰全貌，路牌"今日走过了所有弯路，从此人生尽是坦途"合影。最高海拔约4200m。</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">11:30-12:00</div>
+                <div class="timeline-time">11:30 - 12:00</div>
                 <div class="timeline-content">⭐ <strong>班迪尔蓝湖</strong>（免费）：宝石蓝色小众湖泊，路边停车拍照15-20分钟</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">12:00-16:30</div>
+                <div class="timeline-time">12:00 - 16:30</div>
                 <div class="timeline-content">🚗 沿G314原路返回喀什，约300km/4.5h。途中可简单午餐。</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">16:30-19:30</div>
-                <div class="timeline-content">🍴 自由时间：搜"老牌坊大盘鸡"或古城附近餐厅，大盘鸡80-100元够3人吃，人均40-60元</div>
+                <div class="timeline-time">16:30 - 19:30</div>
+                <div class="timeline-content">🍴 自由时间：搜"老牌坊大盘鸡"或古城附近餐厅，大盘鸡80-100元够3人吃</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">19:30-20:30</div>
+                <div class="timeline-time">19:30 - 20:30</div>
                 <div class="timeline-content">🚗 前往机场，办理还车手续</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">21:55-00:10+1</div>
+                <div class="timeline-time">21:55 - 00:10+1</div>
                 <div class="timeline-content">✈️ 天津航空GS7564 喀什→乌鲁木齐</div>
             </div>
         </div>
         <div class="tip">
-            <strong>💡 提示：</strong>盘龙古道弯道急，晕车的人吃药+坐前排。飞机上睡一觉，凌晨到达乌鲁木齐。
+            <strong>💡 提示</strong>盘龙古道弯道急，晕车的人吃药+坐前排。飞机上睡一觉，凌晨到达乌鲁木齐。
         </div>
         <div class="warning">
-            <strong>🏨 住宿：</strong>乌鲁木齐地窝堡机场酒店（选带免费接机的），约200-300元/间×2间。提前确认凌晨可以入住。
+            <strong>🏨 住宿</strong>乌鲁木齐地窝堡机场酒店（选带免费接机的），约200-300元/间×2间。提前确认凌晨可以入住。
         </div>
     </div>
     
+    <!-- Day 4 -->
     <div id="day4" class="day-content">
-        <h2>Day 4 (6/5 周四)：乌鲁木齐 → 赛里木湖 → 精河县（约5.5h，全程高速）</h2>
+        <div class="day-header">
+            <div class="day-title">Day 4 · 6月5日 周四</div>
+            <div class="day-subtitle">乌鲁木齐 → 赛里木湖 → 精河县</div>
+        </div>
         <div class="timeline">
             <div class="timeline-item">
-                <div class="timeline-time">09:30-10:00</div>
+                <div class="timeline-time">09:30 - 10:00</div>
                 <div class="timeline-content">🚗 取车 - 第二段比亚迪宋Pro</div>
             </div>
             <div class="timeline-item">
@@ -287,15 +720,15 @@
                 <div class="timeline-content">🚗 出发！导航"赛里木湖景区"，上G30连霍高速往"霍尔果斯/伊宁"方向，全程高速约550km</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">12:30-13:00</div>
+                <div class="timeline-time">12:30 - 13:00</div>
                 <div class="timeline-content">🍴 高速服务区午餐，人均20-30元</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">16:00-20:00</div>
-                <div class="timeline-content">⭐ <strong>赛里木湖</strong>（70元/人+自驾环湖100-150元/车，3人合计约360元）：大西洋最后一滴眼泪，自驾环湖70公里！逆时针方向，必停：西海草原、天鹅乐水。湖边风大气温10-15°C，穿外套！</div>
+                <div class="timeline-time">16:00 - 20:00</div>
+                <div class="timeline-content">⭐ <strong>赛里木湖</strong>（70元/人+自驾环湖100-150元/车，3人合计约360元）：大西洋最后一滴眼泪，自驾环湖70公里！逆时针方向，必停：西海草原、天鹅乐水。湖边风大气温10-15°C，<strong>穿外套！</strong></div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">20:00-21:00</div>
+                <div class="timeline-time">20:00 - 21:00</div>
                 <div class="timeline-content">🚗 出景区后导航"精河县"，往东走G30约1小时</div>
             </div>
             <div class="timeline-item">
@@ -304,15 +737,19 @@
             </div>
         </div>
         <div class="tip">
-            <strong>💰 省钱tip：</strong>赛里木湖景区边上住一晚要800-1500元！住精河只要100多，3人省了2000块。精河就在高速边上，纯睡觉过渡用。
+            <strong>💰 省钱tip</strong>赛里木湖景区边上住一晚要800-1500元！住精河只要100多，3人省了2000块。精河就在高速边上，纯睡觉过渡用。
         </div>
         <div class="warning">
-            <strong>🏨 住宿：</strong>精河县连锁/商务酒店，100-150元/间×2间
+            <strong>🏨 住宿</strong>精河县连锁/商务酒店，100-150元/间×2间
         </div>
     </div>
     
+    <!-- Day 5 -->
     <div id="day5" class="day-content">
-        <h2>Day 5 (6/6 周五)：精河 → 果子沟大桥 → 霍城薰衣草 → 霍尔果斯国门 → 特克斯八卦城（约5.5h）</h2>
+        <div class="day-header">
+            <div class="day-title">Day 5 · 6月6日 周五</div>
+            <div class="day-subtitle">精河 → 果子沟 → 薰衣草 → 霍尔果斯 → 特克斯</div>
+        </div>
         <div class="timeline">
             <div class="timeline-item">
                 <div class="timeline-time">10:00</div>
@@ -323,63 +760,58 @@
                 <div class="timeline-content">⭐ <strong>果子沟大桥</strong>（车览）：G30高速上自动经过，"中国最美高速公路桥"，不能停车，副驾/后排拍照</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">11:30-12:30</div>
-                <div class="timeline-content">⭐ <strong>霍城薰衣草</strong>（35-45元/人）：中国普罗旺斯，6月盛花期。进园后沿步道走入花田拍照。💡 公路旁也有免费薰衣草农田可拍！</div>
+                <div class="timeline-time">11:30 - 12:30</div>
+                <div class="timeline-content">⭐ <strong>霍城薰衣草</strong>（35-45元/人）：中国普罗旺斯，6月盛花期。💡 公路旁也有免费薰衣草农田可拍！</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">12:40-14:00</div>
-                <div class="timeline-content">⭐ <strong>霍尔果斯国门</strong>（约30元/人）：中哈边境口岸，看国门大楼、界碑。<strong>带好身份证！</strong>可逛免税购物区。</div>
+                <div class="timeline-time">12:40 - 14:00</div>
+                <div class="timeline-content">⭐ <strong>霍尔果斯国门</strong>（约30元/人）：中哈边境口岸，看国门大楼、界碑。<strong>带好身份证！</strong></div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">14:00-14:30</div>
-                <div class="timeline-content">🍴 霍尔果斯午餐，人均25-40元</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-time">15:00-18:00</div>
+                <div class="timeline-time">15:00 - 18:00</div>
                 <div class="timeline-content">🚗 导航"特克斯县"，约250km/3小时。沿途伊犁河谷田园风光</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">18:00-19:00</div>
+                <div class="timeline-time">18:00 - 19:00</div>
                 <div class="timeline-content">🏨 入住特克斯县（推荐靠近离街的），约150-200元/间×2间。<strong>连住2晚不用换！</strong></div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">20:00-22:00</div>
-                <div class="timeline-content">🍴 <strong>特克斯离街夜市</strong>：马肠子(50-80元)、手抓肉(60-80元)、烤羊排(30-50元)、哈萨克奶茶(10-15元)、椒麻鸡(40-60元)，人均50-70元</div>
+                <div class="timeline-time">20:00 - 22:00</div>
+                <div class="timeline-content">🍴 <strong>特克斯离街夜市</strong>：马肠子、手抓肉、烤羊排、哈萨克奶茶，人均50-70元</div>
             </div>
         </div>
     </div>
     
+    <!-- Day 6 -->
     <div id="day6" class="day-content">
-        <h2>Day 6 (6/7 周六)：喀拉峻草原全天（开车仅1.5h往返，今天主要是玩）</h2>
+        <div class="day-header">
+            <div class="day-title">Day 6 · 6月7日 周六</div>
+            <div class="day-subtitle">喀拉峻草原全天</div>
+        </div>
         <div class="timeline">
             <div class="timeline-item">
                 <div class="timeline-time">10:00</div>
                 <div class="timeline-content">🚗 出发！导航"喀拉峻景区游客中心"（从特克斯出发约40km/1h）</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">11:00-11:30</div>
+                <div class="timeline-time">11:00 - 11:30</div>
                 <div class="timeline-content">🎫 购票+排队等区间车。门票80元/人+区间车90元/人=<strong>170元/人，3人合计510元</strong>。❌ 不能开车进去！</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">11:30-18:00</div>
-                <div class="timeline-content">⭐ <strong>喀拉峻草原+阔克苏大峡谷</strong>：世界自然遗产，新疆最美草原！<br>
-                    1️⃣ 坐区间车→东喀拉峻→<strong>猎鹰台</strong>🔥（俯瞰"人体草原"，至少待1小时）<br>
-                    2️⃣ 换乘车→<strong>阔克苏大峡谷</strong>→<strong>鳄鱼湾观景台</strong>🔥（S形河道像鳄鱼）<br>
-                    3️⃣ 体力OK→继续到"九曲十八弯"<br>
-                    4️⃣ 约17:30开始返回
-                </div>
+                <div class="timeline-time">11:30 - 18:00</div>
+                <div class="timeline-content">⭐ <strong>喀拉峻草原+阔克苏大峡谷</strong>：世界自然遗产，新疆最美草原！<br>猎鹰台（俯瞰人体草原）→ 阔克苏大峡谷 → 鳄鱼湾观景台 → 约17:30开始返回</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">18:30-19:30</div>
+                <div class="timeline-time">18:30 - 19:30</div>
                 <div class="timeline-content">🚗 出景区，开车返回特克斯（约40min）</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">19:30-21:00</div>
+                <div class="timeline-time">19:30 - 21:00</div>
                 <div class="timeline-content">🍴 特克斯县城晚餐，推荐羊排/手抓肉，人均40-60元</div>
             </div>
         </div>
         <div class="warning">
-            <strong>⚠️ 注意：</strong>
+            <strong>⚠️ 注意</strong>
             <ul>
                 <li>⏰ 区间车末班约19:00，别玩过时间！</li>
                 <li>👕 穿冲锋衣！草原风大，白天20°C但风一吹就冷</li>
@@ -387,41 +819,38 @@
                 <li>🍞 带零食和水进去！景区内又贵又少</li>
             </ul>
         </div>
-        <div class="warning">
-            <strong>🏨 住宿：</strong>特克斯县城（同昨晚酒店，不用换）
-        </div>
     </div>
     
+    <!-- Day 7 -->
     <div id="day7" class="day-content">
-        <h2>Day 7 (6/8 周日)：特克斯 → 唐布拉百里画廊 → 乔尔玛（约5h，走走停停）</h2>
+        <div class="day-header">
+            <div class="day-title">Day 7 · 6月8日 周日</div>
+            <div class="day-subtitle">特克斯 → 唐布拉百里画廊 → 乔尔玛</div>
+        </div>
         <div class="timeline">
             <div class="timeline-item">
                 <div class="timeline-time">10:00</div>
                 <div class="timeline-content">🚗 退房出发。先导航"新源县"（约2.5h）</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">12:30-13:30</div>
+                <div class="timeline-time">12:30 - 13:30</div>
                 <div class="timeline-content">🍴 新源县城午餐：拌面、大盘鸡、手抓饭、烤肉，人均25-40元。<br><strong>⛽ 吃完务必加满油！接下来100km唐布拉沿途没有加油站！</strong></div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">13:30-20:00</div>
-                <div class="timeline-content">⭐ <strong>唐布拉百里画廊</strong>（免费！）：100公里开放式景观公路<br>
-                    📍 导航"乔尔玛"（走S316省道自动穿越唐布拉）<br>
-                    沿途必停：百花谷（野花海）→ 仙女湖（高山小湖）→ 唐布拉大草原（大片草原+雪山）→ 阿克塔斯瀑布<br>
-                    节奏：开一段→停车拍照→再开一段，像公路旅行一样
-                </div>
+                <div class="timeline-time">13:30 - 20:00</div>
+                <div class="timeline-content">⭐ <strong>唐布拉百里画廊</strong>（免费！）：100公里开放式景观公路<br>沿途必停：百花谷（野花海）→ 仙女湖（高山小湖）→ 唐布拉大草原 → 阿克塔斯瀑布</div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-time">20:30</div>
                 <div class="timeline-content">🏨 到达乔尔玛，入住</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">20:30-21:30</div>
+                <div class="timeline-time">20:30 - 21:30</div>
                 <div class="timeline-content">🍴 乔尔玛镇上简餐，人均30-50元。镇上有<strong>独库公路烈士纪念碑</strong>，可以致敬。</div>
             </div>
         </div>
         <div class="warning">
-            <strong>⚠️ 重要提醒：</strong>
+            <strong>⚠️ 重要提醒</strong>
             <ul>
                 <li>⛽ 沿途100km基本没有加油站，新源出发前加满！</li>
                 <li>📶 部分路段手机信号弱，离线地图必须有</li>
@@ -429,54 +858,44 @@
             </ul>
         </div>
         <div class="warning">
-            <strong>🏨 住宿：</strong>乔尔玛小镇（客栈/招待所为主，约100-200元/间×2间）。<strong>选择少，务必提前在携程/美团预订！</strong>
+            <strong>🏨 住宿</strong>乔尔玛小镇（客栈/招待所为主，约100-200元/间×2间）。<strong>选择少，务必提前预订！</strong>
         </div>
     </div>
     
+    <!-- Day 8 -->
     <div id="day8" class="day-content">
-        <h2>Day 8 (6/9 周一)：乔尔玛 → 独库公路北段 → 乌鲁木齐（约5.5h）</h2>
+        <div class="day-header">
+            <div class="day-title">Day 8 · 6月9日 周一</div>
+            <div class="day-subtitle">乔尔玛 → 独库公路北段 → 乌鲁木齐</div>
+        </div>
         <div class="timeline">
             <div class="timeline-item">
-                <div class="timeline-time">09:30-10:00</div>
-                <div class="timeline-content">🍴 起床吃早餐。<br><strong>⛽ 在乔尔玛加满油！接下来独库北段150km没有加油站！也没有充电桩！</strong><br>
-                🍞 买/准备好干粮和水当午餐！独库沿途没有餐厅！<br>
-                ❄️ 穿上冲锋衣（达坂山口温度0-5°C）</div>
+                <div class="timeline-time">09:30 - 10:00</div>
+                <div class="timeline-content">🍴 起床吃早餐。<br><strong>⛽ 在乔尔玛加满油！接下来独库北段150km没有加油站！</strong><br>🍞 买/准备好干粮和水当午餐！<br>❄️ 穿上冲锋衣（达坂山口温度0-5°C）</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">10:00-14:00</div>
-                <div class="timeline-content">⭐ <strong>独库公路北段</strong>（免费！）：中国最美公路！纵穿天山，4小时体验"一日四季"<br>
-                    按顺序经过：<br>
-                    1️⃣ 草甸河谷（绿色草原+小溪）<br>
-                    2️⃣ <strong>哈希勒根达坂（海拔3400m）</strong>🔥 6月雪墙公路！道路两边积雪高过车顶，下车玩雪拍照20min<br>
-                    3️⃣ 天瀑（瀑布从山壁冲到公路上）<br>
-                    4️⃣ 老虎口（悬崖绝壁路段，车上看）<br>
-                    5️⃣ 防雪长廊（隧道式雪崩防护建筑）<br>
-                    6️⃣ 从雪山陡降到荒漠戈壁，温差30°C
-                </div>
+                <div class="timeline-time">10:00 - 14:00</div>
+                <div class="timeline-content">⭐ <strong>独库公路北段</strong>（免费！）：中国最美公路！纵穿天山，4小时体验"一日四季"<br>草甸河谷 → <strong>哈希勒根达坂（3400m）</strong>🔥 6月雪墙！→ 天瀑 → 老虎口 → 防雪长廊 → 戈壁</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">14:00-14:30</div>
+                <div class="timeline-time">14:00 - 14:30</div>
                 <div class="timeline-content">📍 到达独山子城区，补油、上厕所、吃口干粮</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">15:00-17:30</div>
+                <div class="timeline-time">15:00 - 17:30</div>
                 <div class="timeline-content">🚗 导航"乌鲁木齐"，上G30高速往东（约250km/2.5h）</div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">17:30-20:30</div>
-                <div class="timeline-content">🛍️ 到达乌鲁木齐！推荐逛<strong>国际大巴扎</strong>：巴旦木/核桃(30-60元/斤)、葡萄干(20-40元/斤)、和田大枣(20-30元/斤)、风干牛肉(80-120元/斤)。<strong>砍价到开价的5-7折！</strong></div>
+                <div class="timeline-time">17:30 - 20:30</div>
+                <div class="timeline-content">🛍️ 到达乌鲁木齐！推荐逛<strong>国际大巴扎</strong>：巴旦木、葡萄干、和田大枣、风干牛肉。<strong>砍价到开价的5-7折！</strong></div>
             </div>
             <div class="timeline-item">
-                <div class="timeline-time">20:00-20:30</div>
-                <div class="timeline-content">🍴 大巴扎附近晚餐，手抓饭、丸子汤、烤串，人均50-80元</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-time">20:30-21:00</div>
+                <div class="timeline-time">20:30 - 21:00</div>
                 <div class="timeline-content">🚗 导航"乌鲁木齐地窝堡机场租车还车点"，办理还车</div>
             </div>
         </div>
         <div class="warning">
-            <strong>⚠️ 独库公路注意：</strong>
+            <strong>⚠️ 独库公路注意</strong>
             <ul>
                 <li>⚠️ 出发前确认独库已开通！关注"独库公路"微信公众号</li>
                 <li>🚗 山路弯道多，限速30-40，不要超速</li>
@@ -485,12 +904,16 @@
             </ul>
         </div>
         <div class="warning">
-            <strong>🏨 住宿：</strong>乌鲁木齐地窝堡机场酒店，约200-300元/间×2间。<strong>必须提前确认有早上05:30送机服务！</strong>
+            <strong>🏨 住宿</strong>乌鲁木齐地窝堡机场酒店，约200-300元/间×2间。<strong>必须提前确认有早上05:30送机服务！</strong>
         </div>
     </div>
     
+    <!-- Day 9 -->
     <div id="day9" class="day-content">
-        <h2>Day 9 (6/10 周二)：返程回家</h2>
+        <div class="day-header">
+            <div class="day-title">Day 9 · 6月10日 周二</div>
+            <div class="day-subtitle">返程回家</div>
+        </div>
         <div class="timeline">
             <div class="timeline-item">
                 <div class="timeline-time">05:30</div>
@@ -526,18 +949,15 @@
 
         // 颜色配置
         const colors = {
-            south: '#e74c3c',
-            north: '#3498db',
-            day: '#9b59b6',
-            scenic: '#ffa726',
-            city: '#66bb6a',
-            hotel: '#ff7043',
-            food: '#66bb6a'
+            day: '#6366f1',
+            scenic: '#f59e0b',
+            city: '#10b981',
+            hotel: '#ef4444',
+            food: '#10b981'
         };
 
         // 所有地点坐标
         const locations = {
-            // 南疆帕米尔段
             '喀什徕宁机场': [39.5436, 76.0197],
             '喀什古城东门': [39.4676, 75.9879],
             '喀什古城': [39.4676, 75.9879],
@@ -557,271 +977,163 @@
             '人生尽是坦途路牌': [37.8500, 75.4550],
             '班迪尔蓝湖': [37.9565, 75.3565],
             '喀什机场还车点': [39.5430, 76.0200],
-            
-            // 北疆伊犁段
             '乌鲁木齐地窝堡机场': [43.9070, 87.4740],
             '乌鲁木齐机场取车点': [43.9065, 87.4735],
             '昌吉服务区': [44.0500, 87.3500],
-            '呼图壁服务区': [44.1800, 86.9000],
-            '石河子服务区': [44.3200, 86.0500],
             '精河服务区': [44.6000, 82.8700],
-            '赛里木湖东门': [44.6012, 81.2078],
             '赛里木湖': [44.6012, 81.2078],
             '赛里木湖月亮湾': [44.5800, 81.1500],
             '赛里木湖西海草原': [44.5600, 81.1200],
             '赛里木湖天鹅乐水': [44.5400, 81.1000],
-            '赛里木湖南门': [44.5200, 81.1800],
             '精河县城': [44.6025, 82.8675],
             '精河酒店': [44.6030, 82.8680],
             '果子沟大桥': [44.3512, 80.9512],
-            '果子沟观景台': [44.3520, 80.9520],
-            '霍城清水河镇': [44.0512, 80.8712],
             '解忧公主薰衣草园': [44.0615, 80.8685],
             '霍尔果斯国门景区': [44.1215, 80.4215],
-            '霍尔果斯口岸': [44.1220, 80.4220],
             '特克斯八卦城': [43.2156, 81.8356],
             '特克斯离街': [43.2160, 81.8360],
             '特克斯酒店': [43.2165, 81.8365],
             '喀拉峻景区游客中心': [43.1200, 81.8800],
             '喀拉峻猎鹰台': [43.1800, 81.9200],
-            '喀拉峻人体草原': [43.1600, 81.9000],
             '阔克苏大峡谷': [43.0800, 81.9500],
-            '鳄鱼湾观景台': [43.0600, 81.9300],
-            '九曲十八弯': [43.0500, 81.9200],
             '新源县城': [43.4312, 83.2512],
-            '新源午餐点': [43.4320, 83.2520],
             '唐布拉百花谷': [43.5512, 84.0512],
             '唐布拉仙女湖': [43.5200, 84.0800],
             '唐布拉大草原': [43.5000, 84.1000],
             '阿克塔斯瀑布': [43.4800, 84.1200],
-            '唐布拉观景台': [43.4600, 84.1400],
             '乔尔玛镇': [43.2512, 84.1512],
-            '乔尔玛住宿': [43.2515, 84.1515],
-            '独库公路烈士纪念碑': [43.2520, 84.1520],
             '哈希勒根达坂': [43.5500, 84.5500],
             '哈希勒根雪墙': [43.5510, 84.5510],
             '天瀑': [43.5200, 84.5800],
-            '老虎口': [43.4800, 84.6200],
-            '防雪长廊': [43.4500, 84.6500],
-            '独山子大峡谷': [44.3312, 84.8812],
             '独山子城区': [44.3320, 84.8820],
-            '奎屯服务区': [44.4500, 84.9000],
             '乌鲁木齐国际大巴扎': [43.7958, 87.6168],
             '乌鲁木齐机场还车点': [43.9068, 87.4738],
             '乌鲁木齐机场酒店': [43.9072, 87.4742],
             '地窝堡机场T2': [43.9075, 87.4745]
         };
 
-        // 每天路线数据（含标签显示顺序）
+        // 每天路线数据
         const dayRoutes = {
             'overview': {
                 routes: [
-                    // Day 1: 抵达喀什
-                    {
-                        points: [locations['喀什徕宁机场'], locations['喀什古城']],
-                        color: '#FF6B6B', weight: 3, opacity: 0.8, dashArray: null, label: 'Day1'
-                    },
-                    // Day 2: 喀什→塔县
-                    {
-                        points: [locations['喀什古城'], locations['盖孜边防检查站'], locations['白沙湖'], locations['喀拉库勒湖'], locations['塔什库尔干县城']],
-                        color: '#4ECDC4', weight: 3, opacity: 0.8, dashArray: null, label: 'Day2'
-                    },
-                    // Day 3: 塔县→盘龙→喀什→飞乌鲁木齐
-                    {
-                        points: [locations['塔什库尔干县城'], locations['盘龙古道观景台'], locations['班迪尔蓝湖'], locations['喀什古城']],
-                        color: '#45B7D1', weight: 3, opacity: 0.8, dashArray: null, label: 'Day3'
-                    },
-                    // Day 4: 乌鲁木齐→赛里木湖→精河
-                    {
-                        points: [locations['乌鲁木齐地窝堡机场'], locations['赛里木湖'], locations['精河县城']],
-                        color: '#96CEB4', weight: 3, opacity: 0.8, dashArray: null, label: 'Day4'
-                    },
-                    // Day 5: 精河→薰衣草→霍尔果斯→特克斯
-                    {
-                        points: [locations['精河县城'], locations['果子沟大桥'], locations['解忧公主薰衣草园'], locations['霍尔果斯国门景区'], locations['特克斯八卦城']],
-                        color: '#FFEAA7', weight: 3, opacity: 0.8, dashArray: null, label: 'Day5'
-                    },
-                    // Day 6: 特克斯→喀拉峻→特克斯
-                    {
-                        points: [locations['特克斯八卦城'], locations['喀拉峻景区游客中心'], locations['喀拉峻猎鹰台'], locations['特克斯八卦城']],
-                        color: '#DDA0DD', weight: 3, opacity: 0.8, dashArray: null, label: 'Day6'
-                    },
-                    // Day 7: 特克斯→新源→唐布拉→乔尔玛
-                    {
-                        points: [locations['特克斯八卦城'], locations['新源县城'], locations['唐布拉百花谷'], locations['乔尔玛镇']],
-                        color: '#FFB347', weight: 3, opacity: 0.8, dashArray: null, label: 'Day7'
-                    },
-                    // Day 8: 乔尔玛→独库→独山子→乌鲁木齐
-                    {
-                        points: [locations['乔尔玛镇'], locations['哈希勒根达坂'], locations['独山子城区'], locations['乌鲁木齐国际大巴扎']],
-                        color: '#87CEEB', weight: 3, opacity: 0.8, dashArray: null, label: 'Day8'
-                    },
-                    // Day 9: 乌鲁木齐→机场
-                    {
-                        points: [locations['乌鲁木齐国际大巴扎'], locations['乌鲁木齐地窝堡机场']],
-                        color: '#98D8C8', weight: 3, opacity: 0.8, dashArray: null, label: 'Day9'
-                    }
+                    {points: [locations['喀什徕宁机场'], locations['喀什古城']], color: '#FF6B6B', weight: 4, opacity: 0.9},
+                    {points: [locations['喀什古城'], locations['白沙湖'], locations['喀拉库勒湖'], locations['塔什库尔干县城']], color: '#4ECDC4', weight: 4, opacity: 0.9},
+                    {points: [locations['塔什库尔干县城'], locations['盘龙古道观景台'], locations['班迪尔蓝湖'], locations['喀什古城']], color: '#45B7D1', weight: 4, opacity: 0.9},
+                    {points: [locations['乌鲁木齐地窝堡机场'], locations['赛里木湖'], locations['精河县城']], color: '#96CEB4', weight: 4, opacity: 0.9},
+                    {points: [locations['精河县城'], locations['果子沟大桥'], locations['解忧公主薰衣草园'], locations['霍尔果斯国门景区'], locations['特克斯八卦城']], color: '#FFEAA7', weight: 4, opacity: 0.9},
+                    {points: [locations['特克斯八卦城'], locations['喀拉峻猎鹰台'], locations['特克斯八卦城']], color: '#DDA0DD', weight: 4, opacity: 0.9},
+                    {points: [locations['特克斯八卦城'], locations['新源县城'], locations['唐布拉百花谷'], locations['乔尔玛镇']], color: '#FFB347', weight: 4, opacity: 0.9},
+                    {points: [locations['乔尔玛镇'], locations['哈希勒根达坂'], locations['独山子城区'], locations['乌鲁木齐国际大巴扎']], color: '#87CEEB', weight: 4, opacity: 0.9},
+                    {points: [locations['乌鲁木齐国际大巴扎'], locations['乌鲁木齐地窝堡机场']], color: '#98D8C8', weight: 4, opacity: 0.9}
                 ],
                 markers: [
-                    // Day1 抵达
-                    {name: 'Day1 ✈️ 喀什', coord: locations['喀什古城'], type: 'day1', navName: '喀什古城东门'},
-                    // Day2 高原
-                    {name: 'Day2 ⛰️ 白沙湖', coord: locations['白沙湖'], type: 'day2', navName: '白沙湖景区'},
+                    {name: 'Day1 ✈️ 喀什', coord: locations['喀什古城'], type: 'day1', navName: '喀什古城'},
+                    {name: 'Day2 ⛰️ 白沙湖', coord: locations['白沙湖'], type: 'day2', navName: '白沙湖'},
                     {name: 'Day2 🏨 塔县', coord: locations['塔什库尔干县城'], type: 'day2', navName: '塔什库尔干县'},
-                    // Day3 盘龙
-                    {name: 'Day3 🐉 盘龙古道', coord: locations['盘龙古道观景台'], type: 'day3', navName: '盘龙古道观景台'},
-                    {name: 'Day3 ✈️ 飞乌鲁木齐', coord: locations['喀什古城'], type: 'day3', offset: [0, 25], navName: '喀什徕宁机场'},
-                    // Day4 赛里木湖
-                    {name: 'Day4 🚗 乌鲁木齐取车', coord: locations['乌鲁木齐地窝堡机场'], type: 'day4', navName: '乌鲁木齐地窝堡机场'},
-                    {name: 'Day4 💧 赛里木湖', coord: locations['赛里木湖'], type: 'day4', navName: '赛里木湖东门'},
-                    {name: 'Day4 🏨 精河', coord: locations['精河县城'], type: 'day4', navName: '精河县'},
-                    // Day5 薰衣草
-                    {name: 'Day5 💜 薰衣草', coord: locations['解忧公主薰衣草园'], type: 'day5', navName: '解忧公主薰衣草博物馆'},
-                    {name: 'Day5 🇨🇳 霍尔果斯', coord: locations['霍尔果斯国门景区'], type: 'day5', navName: '霍尔果斯国门景区游客中心'},
-                    {name: 'Day5 🏨 特克斯', coord: locations['特克斯八卦城'], type: 'day5', navName: '特克斯县'},
-                    // Day6 喀拉峻
-                    {name: 'Day6 🏔️ 喀拉峻', coord: locations['喀拉峻猎鹰台'], type: 'day6', navName: '喀拉峻国际旅游生态区游客中心'},
-                    // Day7 唐布拉
-                    {name: 'Day7 ⛽ 新源加满', coord: locations['新源县城'], type: 'day7', navName: '新源县'},
+                    {name: 'Day3 🐉 盘龙', coord: locations['盘龙古道观景台'], type: 'day3', navName: '盘龙古道'},
+                    {name: 'Day4 💧 赛里木', coord: locations['赛里木湖'], type: 'day4', navName: '赛里木湖'},
+                    {name: 'Day5 💜 薰衣草', coord: locations['解忧公主薰衣草园'], type: 'day5', navName: '解忧公主薰衣草园'},
+                    {name: 'Day5 🇨🇳 霍尔果斯', coord: locations['霍尔果斯国门景区'], type: 'day5', navName: '霍尔果斯国门'},
+                    {name: 'Day6 🏔️ 喀拉峻', coord: locations['喀拉峻猎鹰台'], type: 'day6', navName: '喀拉峻草原'},
                     {name: 'Day7 🌸 唐布拉', coord: locations['唐布拉百花谷'], type: 'day7', navName: '唐布拉百里画廊'},
-                    {name: 'Day7 🏨 乔尔玛', coord: locations['乔尔玛镇'], type: 'day7', navName: '乔尔玛服务区'},
-                    // Day8 独库
-                    {name: 'Day8 ❄️ 独库雪墙', coord: locations['哈希勒根达坂'], type: 'day8', navName: '独库公路哈希勒根达坂'},
-                    {name: 'Day8 🛍️ 大巴扎', coord: locations['乌鲁木齐国际大巴扎'], type: 'day8', navName: '乌鲁木齐国际大巴扎'},
-                    {name: 'Day8 🏨 机场酒店', coord: locations['乌鲁木齐机场酒店'], type: 'day8', navName: '乌鲁木齐机场'},
-                    // Day9 返程
-                    {name: 'Day9 ✈️ 回福州', coord: locations['地窝堡机场T2'], type: 'day9', navName: '乌鲁木齐地窝堡机场'}
+                    {name: 'Day8 ❄️ 独库', coord: locations['哈希勒根达坂'], type: 'day8', navName: '独库公路'},
+                    {name: 'Day8 🛍️ 大巴扎', coord: locations['乌鲁木齐国际大巴扎'], type: 'day8', navName: '乌鲁木齐国际大巴扎'}
                 ],
                 center: [41.5, 82],
                 zoom: 6
             },
             'day1': {
-                routes: [{points: [locations['喀什徕宁机场'], locations['喀什酒店'], locations['喀什古城东门']], color: colors.day, weight: 3, opacity: 0.9}],
+                routes: [{points: [locations['喀什徕宁机场'], locations['喀什酒店'], locations['喀什古城东门']], color: colors.day, weight: 4, opacity: 0.9}],
                 markers: [
-                    {name: '① 喀什徕宁机场 ✈️', coord: locations['喀什徕宁机场'], type: 'city', navName: '喀什徕宁机场'},
-                    {name: '② 取车点 🚗', coord: locations['喀什徕宁机场'], type: 'city', offset: [0, 15], navName: '喀什徕宁机场'},
-                    {name: '🏨 喀什古城酒店', coord: locations['喀什酒店'], type: 'hotel', navName: '喀什古城东门'},
-                    {name: '③ 喀什古城东门', coord: locations['喀什古城东门'], type: 'scenic', navName: '喀什古城东门'},
-                    {name: '④ 彩虹巷 📸', coord: locations['彩虹巷'], type: 'scenic', navName: '喀什古城东门'},
-                    {name: '⑤ 百年老茶馆 🍵', coord: locations['百年老茶馆'], type: 'food', navName: '百年老茶馆'},
-                    {name: '⑥ 古城夜市 🍖', coord: locations['喀什夜市'], type: 'food', navName: '喀什古城夜市'}
+                    {name: '✈️ 喀什机场', coord: locations['喀什徕宁机场'], type: 'city', navName: '喀什徕宁机场'},
+                    {name: '🏨 酒店', coord: locations['喀什酒店'], type: 'hotel', navName: '喀什古城'},
+                    {name: '🏰 古城东门', coord: locations['喀什古城东门'], type: 'scenic', navName: '喀什古城'}
                 ],
                 center: [39.47, 76.00],
                 zoom: 13
             },
             'day2': {
-                routes: [{points: [locations['喀什古城'], locations['盖孜边防检查站'], locations['白沙湖'], locations['喀拉库勒湖'], locations['慕士塔格峰观景台'], locations['塔合曼湿地'], locations['塔什库尔干县城']], color: colors.day, weight: 3, opacity: 0.9}],
+                routes: [{points: [locations['喀什古城'], locations['白沙湖'], locations['喀拉库勒湖'], locations['塔什库尔干县城']], color: colors.day, weight: 4, opacity: 0.9}],
                 markers: [
-                    {name: '① 喀什出发 ⛽加满', coord: locations['喀什古城'], type: 'city', navName: '喀什古城东门'},
-                    {name: '② 盖孜边防检查站 🪪', coord: locations['盖孜边防检查站'], type: 'city', navName: '盖孜边防检查站'},
-                    {name: '③ 白沙湖 ⭐⭐⭐⭐⭐', coord: locations['白沙湖'], type: 'scenic', navName: '白沙湖景区'},
-                    {name: '④ 喀拉库勒湖 ⭐⭐⭐⭐⭐', coord: locations['喀拉库勒湖'], type: 'scenic', navName: '喀拉库勒湖'},
-                    {name: '⑤ 慕士塔格峰观景台 🏔️', coord: locations['慕士塔格峰观景台'], type: 'scenic', navName: '慕士塔格峰观景台'},
-                    {name: '⑥ 塔合曼湿地', coord: locations['塔合曼湿地'], type: 'scenic', navName: '塔合曼湿地观景台'},
-                    {name: '🏨 塔什库尔干县城', coord: locations['塔什库尔干县城'], type: 'hotel', navName: '塔什库尔干县'}
+                    {name: '🚗 喀什出发', coord: locations['喀什古城'], type: 'city', navName: '喀什古城'},
+                    {name: '⭐ 白沙湖', coord: locations['白沙湖'], type: 'scenic', navName: '白沙湖'},
+                    {name: '⭐ 喀拉库勒湖', coord: locations['喀拉库勒湖'], type: 'scenic', navName: '喀拉库勒湖'},
+                    {name: '🏨 塔县', coord: locations['塔什库尔干县城'], type: 'hotel', navName: '塔什库尔干县'}
                 ],
                 center: [38.6, 75.3],
                 zoom: 8
             },
             'day3': {
-                routes: [{points: [locations['塔什库尔干县城'], locations['瓦恰公路入口'], locations['盘龙古道观景台'], locations['人生尽是坦途路牌'], locations['班迪尔蓝湖'], locations['喀什机场还车点']], color: colors.day, weight: 3, opacity: 0.9}],
+                routes: [{points: [locations['塔什库尔干县城'], locations['盘龙古道观景台'], locations['班迪尔蓝湖'], locations['喀什机场还车点']], color: colors.day, weight: 4, opacity: 0.9}],
                 markers: [
-                    {name: '🏨 塔什库尔干出发', coord: locations['塔什库尔干县城'], type: 'hotel', navName: '塔什库尔干县'},
-                    {name: '① 瓦恰公路入口', coord: locations['瓦恰公路入口'], type: 'city', navName: '瓦恰乡'},
-                    {name: '② 盘龙古道观景台 ⭐⭐⭐⭐⭐', coord: locations['盘龙古道观景台'], type: 'scenic', navName: '盘龙古道观景台'},
-                    {name: '③ "人生尽是坦途"路牌 📸', coord: locations['人生尽是坦途路牌'], type: 'scenic', navName: '盘龙古道观景台'},
-                    {name: '④ 班迪尔蓝湖 ⭐⭐⭐⭐', coord: locations['班迪尔蓝湖'], type: 'scenic', navName: '班迪尔蓝湖'},
-                    {name: '⑤ 喀什还车+晚餐 🍗', coord: locations['喀什机场还车点'], type: 'food', navName: '喀什徕宁机场'},
-                    {name: '⑥ 飞乌鲁木齐 ✈️', coord: locations['喀什机场还车点'], type: 'city', offset: [0, 20], navName: '喀什徕宁机场'}
+                    {name: '🏨 塔县出发', coord: locations['塔什库尔干县城'], type: 'hotel', navName: '塔什库尔干县'},
+                    {name: '⭐ 盘龙古道', coord: locations['盘龙古道观景台'], type: 'scenic', navName: '盘龙古道'},
+                    {name: '⭐ 班迪尔蓝湖', coord: locations['班迪尔蓝湖'], type: 'scenic', navName: '班迪尔蓝湖'},
+                    {name: '✈️ 喀什机场', coord: locations['喀什机场还车点'], type: 'city', navName: '喀什徕宁机场'}
                 ],
                 center: [38.5, 75.5],
                 zoom: 9
             },
             'day4': {
-                routes: [{points: [locations['乌鲁木齐机场取车点'], locations['昌吉服务区'], locations['呼图壁服务区'], locations['石河子服务区'], locations['精河服务区'], locations['赛里木湖东门'], locations['赛里木湖月亮湾'], locations['赛里木湖西海草原'], locations['赛里木湖天鹅乐水'], locations['精河县城']], color: colors.day, weight: 3, opacity: 0.9}],
+                routes: [{points: [locations['乌鲁木齐机场取车点'], locations['赛里木湖'], locations['精河县城']], color: colors.day, weight: 4, opacity: 0.9}],
                 markers: [
-                    {name: '🏨 乌鲁木齐机场酒店', coord: locations['乌鲁木齐机场取车点'], type: 'hotel', navName: '乌鲁木齐机场'},
-                    {name: '① 取车出发 🚗', coord: locations['乌鲁木齐机场取车点'], type: 'city', offset: [0, 15], navName: '乌鲁木齐地窝堡机场'},
-                    {name: '② 昌吉服务区', coord: locations['昌吉服务区'], type: 'city', navName: '昌吉服务区'},
-                    {name: '③ 呼图壁服务区', coord: locations['呼图壁服务区'], type: 'city', navName: '呼图壁服务区'},
-                    {name: '④ 石河子服务区', coord: locations['石河子服务区'], type: 'city', navName: '石河子服务区'},
-                    {name: '⑤ 赛里木湖东门', coord: locations['赛里木湖东门'], type: 'scenic', navName: '赛里木湖东门'},
-                    {name: '⑥ 月亮湾 ⭐⭐⭐⭐⭐', coord: locations['赛里木湖月亮湾'], type: 'scenic', navName: '赛里木湖月亮湾'},
-                    {name: '⑦ 西海草原 🌸', coord: locations['赛里木湖西海草原'], type: 'scenic', navName: '赛里木湖东门'},
-                    {name: '⑧ 天鹅乐水 🦢', coord: locations['赛里木湖天鹅乐水'], type: 'scenic', navName: '赛里木湖东门'},
-                    {name: '🏨 精河县城', coord: locations['精河县城'], type: 'hotel', navName: '精河县'}
+                    {name: '✈️ 乌鲁木齐机场', coord: locations['乌鲁木齐地窝堡机场'], type: 'city', navName: '乌鲁木齐地窝堡机场'},
+                    {name: '💧 赛里木湖', coord: locations['赛里木湖'], type: 'scenic', navName: '赛里木湖'},
+                    {name: '🏨 精河', coord: locations['精河县城'], type: 'hotel', navName: '精河县'}
                 ],
                 center: [44.3, 82.5],
                 zoom: 7
             },
             'day5': {
-                routes: [{points: [locations['精河酒店'], locations['果子沟大桥'], locations['解忧公主薰衣草园'], locations['霍尔果斯国门景区'], locations['特克斯八卦城']], color: colors.day, weight: 3, opacity: 0.9}],
+                routes: [{points: [locations['精河酒店'], locations['果子沟大桥'], locations['解忧公主薰衣草园'], locations['霍尔果斯国门景区'], locations['特克斯八卦城']], color: colors.day, weight: 4, opacity: 0.9}],
                 markers: [
-                    {name: '🏨 精河酒店出发', coord: locations['精河酒店'], type: 'hotel', navName: '精河县'},
-                    {name: '① 果子沟大桥 🌉（车览）', coord: locations['果子沟大桥'], type: 'scenic', navName: '果子沟大桥观景平台'},
-                    {name: '② 霍城薰衣草园 💜', coord: locations['解忧公主薰衣草园'], type: 'scenic', navName: '解忧公主薰衣草博物馆'},
-                    {name: '③ 霍尔果斯国门 🇨🇳', coord: locations['霍尔果斯国门景区'], type: 'scenic', navName: '霍尔果斯国门景区游客中心'},
-                    {name: '④ 午餐+出发 🍜', coord: locations['霍尔果斯口岸'], type: 'food', navName: '霍尔果斯口岸免税店'},
-                    {name: '🏨 特克斯八卦城', coord: locations['特克斯八卦城'], type: 'hotel', navName: '特克斯县'},
-                    {name: '⑤ 离街夜市 🍖', coord: locations['特克斯离街'], type: 'food', navName: '特克斯离街'}
+                    {name: '🏨 精河出发', coord: locations['精河酒店'], type: 'hotel', navName: '精河县'},
+                    {name: '🌉 果子沟大桥', coord: locations['果子沟大桥'], type: 'scenic', navName: '果子沟大桥'},
+                    {name: '💜 薰衣草', coord: locations['解忧公主薰衣草园'], type: 'scenic', navName: '解忧公主薰衣草园'},
+                    {name: '🇨🇳 霍尔果斯', coord: locations['霍尔果斯国门景区'], type: 'scenic', navName: '霍尔果斯国门'},
+                    {name: '🏨 特克斯', coord: locations['特克斯八卦城'], type: 'hotel', navName: '特克斯县'}
                 ],
                 center: [43.8, 81.2],
                 zoom: 8
             },
             'day6': {
-                routes: [{points: [locations['特克斯酒店'], locations['喀拉峻景区游客中心'], locations['喀拉峻猎鹰台'], locations['喀拉峻人体草原'], locations['阔克苏大峡谷'], locations['鳄鱼湾观景台'], locations['特克斯酒店']], color: colors.day, weight: 3, opacity: 0.9}],
+                routes: [{points: [locations['特克斯酒店'], locations['喀拉峻景区游客中心'], locations['喀拉峻猎鹰台'], locations['特克斯酒店']], color: colors.day, weight: 4, opacity: 0.9}],
                 markers: [
-                    {name: '🏨 特克斯酒店出发', coord: locations['特克斯酒店'], type: 'hotel', navName: '特克斯县'},
-                    {name: '① 喀拉峻游客中心 🎫', coord: locations['喀拉峻景区游客中心'], type: 'city', navName: '喀拉峻国际旅游生态区游客中心'},
-                    {name: '② 猎鹰台 ⭐⭐⭐⭐⭐', coord: locations['喀拉峻猎鹰台'], type: 'scenic', navName: '喀拉峻猎鹰台'},
-                    {name: '③ 人体草原 🏔️', coord: locations['喀拉峻人体草原'], type: 'scenic', navName: '喀拉峻人体草原观景点'},
-                    {name: '④ 阔克苏大峡谷', coord: locations['阔克苏大峡谷'], type: 'scenic', navName: '阔克苏大峡谷景区'},
-                    {name: '⑤ 鳄鱼湾观景台 🔥', coord: locations['鳄鱼湾观景台'], type: 'scenic', navName: '鳄鱼湾观景台'},
-                    {name: '⑥ 返回特克斯晚餐 🍗', coord: locations['特克斯酒店'], type: 'food', offset: [0, 15], navName: '特克斯县'}
+                    {name: '🏨 特克斯出发', coord: locations['特克斯酒店'], type: 'hotel', navName: '特克斯县'},
+                    {name: '🎫 游客中心', coord: locations['喀拉峻景区游客中心'], type: 'city', navName: '喀拉峻景区'},
+                    {name: '⭐ 猎鹰台', coord: locations['喀拉峻猎鹰台'], type: 'scenic', navName: '喀拉峻草原'}
                 ],
                 center: [43.15, 81.92],
                 zoom: 10
             },
             'day7': {
-                routes: [{points: [locations['特克斯酒店'], locations['新源县城'], locations['唐布拉百花谷'], locations['唐布拉仙女湖'], locations['唐布拉大草原'], locations['阿克塔斯瀑布'], locations['乔尔玛镇']], color: colors.day, weight: 3, opacity: 0.9}],
+                routes: [{points: [locations['特克斯酒店'], locations['新源县城'], locations['唐布拉百花谷'], locations['乔尔玛镇']], color: colors.day, weight: 4, opacity: 0.9}],
                 markers: [
-                    {name: '🏨 特克斯酒店出发', coord: locations['特克斯酒店'], type: 'hotel', navName: '特克斯县'},
-                    {name: '① 新源县城 ⛽加满油！', coord: locations['新源县城'], type: 'city', navName: '新源县'},
-                    {name: '② 午餐 🍜', coord: locations['新源午餐点'], type: 'food', navName: '新源县'},
-                    {name: '③ 百花谷 🌸', coord: locations['唐布拉百花谷'], type: 'scenic', navName: '唐布拉百花谷'},
-                    {name: '④ 仙女湖 💧', coord: locations['唐布拉仙女湖'], type: 'scenic', navName: '唐布拉仙女湖'},
-                    {name: '⑤ 唐布拉大草原 ⭐⭐⭐⭐⭐', coord: locations['唐布拉大草原'], type: 'scenic', navName: '唐布拉草原游客中心'},
-                    {name: '⑥ 阿克塔斯瀑布 🌊', coord: locations['阿克塔斯瀑布'], type: 'scenic', navName: '阿克塔斯瀑布'},
-                    {name: '🏨 乔尔玛镇住宿', coord: locations['乔尔玛镇'], type: 'hotel', navName: '乔尔玛服务区'},
-                    {name: '⑦ 烈士纪念碑 🎖️', coord: locations['独库公路烈士纪念碑'], type: 'scenic', navName: '独库公路烈士纪念碑'}
+                    {name: '🏨 特克斯出发', coord: locations['特克斯酒店'], type: 'hotel', navName: '特克斯县'},
+                    {name: '⛽ 新源加满', coord: locations['新源县城'], type: 'city', navName: '新源县'},
+                    {name: '⭐ 唐布拉', coord: locations['唐布拉百花谷'], type: 'scenic', navName: '唐布拉百里画廊'},
+                    {name: '🏨 乔尔玛', coord: locations['乔尔玛镇'], type: 'hotel', navName: '乔尔玛'}
                 ],
                 center: [43.4, 84.1],
                 zoom: 9
             },
             'day8': {
-                routes: [{points: [locations['乔尔玛镇'], locations['哈希勒根达坂'], locations['哈希勒根雪墙'], locations['天瀑'], locations['老虎口'], locations['防雪长廊'], locations['独山子城区'], locations['乌鲁木齐国际大巴扎'], locations['乌鲁木齐机场还车点']], color: colors.day, weight: 3, opacity: 0.9}],
+                routes: [{points: [locations['乔尔玛镇'], locations['哈希勒根达坂'], locations['独山子城区'], locations['乌鲁木齐国际大巴扎']], color: colors.day, weight: 4, opacity: 0.9}],
                 markers: [
-                    {name: '🏨 乔尔玛出发 ⛽加满+干粮', coord: locations['乔尔玛镇'], type: 'hotel', navName: '乔尔玛服务区'},
-                    {name: '① 哈希勒根达坂 (3400m) ❄️', coord: locations['哈希勒根达坂'], type: 'scenic', navName: '哈希勒根达坂观景台'},
-                    {name: '② 6月雪墙 🔥', coord: locations['哈希勒根雪墙'], type: 'scenic', navName: '哈希勒根达坂观景台'},
-                    {name: '③ 天瀑 🌊', coord: locations['天瀑'], type: 'scenic', navName: '独库公路天瀑'},
-                    {name: '④ 老虎口 ⚠️', coord: locations['老虎口'], type: 'scenic', navName: '独库公路老虎口'},
-                    {name: '⑤ 防雪长廊', coord: locations['防雪长廊'], type: 'scenic', navName: '独库公路防雪长廊'},
-                    {name: '⑥ 独山子城区（午餐）🍜', coord: locations['独山子城区'], type: 'food', navName: '独山子区'},
-                    {name: '⑦ 国际大巴扎 🛍️', coord: locations['乌鲁木齐国际大巴扎'], type: 'scenic', navName: '乌鲁木齐国际大巴扎'},
-                    {name: '🏨 机场酒店', coord: locations['乌鲁木齐机场酒店'], type: 'hotel', navName: '乌鲁木齐机场'},
-                    {name: '⑧ 还车点 🚗', coord: locations['乌鲁木齐机场还车点'], type: 'city', navName: '乌鲁木齐地窝堡机场'}
+                    {name: '🏨 乔尔玛出发', coord: locations['乔尔玛镇'], type: 'hotel', navName: '乔尔玛'},
+                    {name: '❄️ 哈希勒根', coord: locations['哈希勒根达坂'], type: 'scenic', navName: '哈希勒根达坂'},
+                    {name: '🏛️ 独山子', coord: locations['独山子城区'], type: 'city', navName: '独山子区'},
+                    {name: '🛍️ 大巴扎', coord: locations['乌鲁木齐国际大巴扎'], type: 'scenic', navName: '乌鲁木齐国际大巴扎'},
+                    {name: '🏨 机场酒店', coord: locations['乌鲁木齐机场酒店'], type: 'hotel', navName: '乌鲁木齐机场'}
                 ],
                 center: [43.8, 85.5],
                 zoom: 7
             },
             'day9': {
-                routes: [{points: [locations['乌鲁木齐机场酒店'], locations['地窝堡机场T2']], color: colors.day, weight: 3, opacity: 0.9}],
+                routes: [{points: [locations['乌鲁木齐机场酒店'], locations['地窝堡机场T2']], color: colors.day, weight: 4, opacity: 0.9}],
                 markers: [
                     {name: '🏨 机场酒店', coord: locations['乌鲁木齐机场酒店'], type: 'hotel', navName: '乌鲁木齐机场'},
-                    {name: '① 05:30送机 🚐', coord: locations['乌鲁木齐机场酒店'], type: 'city', offset: [0, 15], navName: '乌鲁木齐地窝堡机场'},
-                    {name: '② 地窝堡机场T2 ✈️', coord: locations['地窝堡机场T2'], type: 'city', navName: '乌鲁木齐地窝堡机场'},
-                    {name: '③ 07:25起飞 → 14:45到福州', coord: locations['地窝堡机场T2'], type: 'city', offset: [0, 15], navName: '乌鲁木齐地窝堡机场'}
+                    {name: '✈️ T2航站楼', coord: locations['地窝堡机场T2'], type: 'city', navName: '乌鲁木齐地窝堡机场'}
                 ],
                 center: [43.91, 87.47],
                 zoom: 14
@@ -846,53 +1158,34 @@
             };
             if (dayColors[type]) return dayColors[type];
             switch(type) {
-                case 'scenic': return colors.scenic;
-                case 'city': return colors.city;
-                case 'hotel': return colors.hotel;
-                case 'food': return colors.food;
-                default: return colors.scenic;
-            }
-        }
-
-        function getMarkerRadius(type) {
-            switch(type) {
-                case 'scenic': return 9;
-                case 'hotel': return 11;
-                case 'city': return 7;
-                case 'food': return 7;
-                default: return 7;
+                case 'scenic': return '#f59e0b';
+                case 'city': return '#10b981';
+                case 'hotel': return '#ef4444';
+                case 'food': return '#10b981';
+                default: return '#6366f1';
             }
         }
 
         function createLabelIcon(name, type) {
-            const dayColors = {
-                'day1': '#FF6B6B', 'day2': '#4ECDC4', 'day3': '#45B7D1',
-                'day4': '#96CEB4', 'day5': '#FFEAA7', 'day6': '#DDA0DD',
-                'day7': '#FFB347', 'day8': '#87CEEB', 'day9': '#98D8C8',
-                'hotel': '#ff7043', 'scenic': '#ffa726', 'food': '#66bb6a', 'city': '#66bb6a'
-            };
-            const bgColor = dayColors[type] || '#66bb6a';
-            const textColor = (type === 'day5' || type === 'day4') ? '#333' : 'white';
+            const bgColor = getMarkerColor(type);
+            const isLight = ['day4', 'day5'].includes(type);
+            const textColor = isLight ? '#333' : 'white';
             
             return L.divIcon({
                 className: 'custom-label',
                 html: `<div style="
                     background: ${bgColor};
                     color: ${textColor};
-                    padding: 2px 6px;
-                    border-radius: 10px;
-                    font-size: 10px;
-                    font-weight: bold;
+                    padding: 4px 10px;
+                    border-radius: 12px;
+                    font-size: 11px;
+                    font-weight: 600;
                     white-space: nowrap;
-                    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-                    border: 1.5px solid white;
-                    text-align: center;
-                    max-width: 120px;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                    border: 2px solid white;
                 ">${name}</div>`,
-                iconSize: [80, 20],
-                iconAnchor: [40, 10]
+                iconSize: [100, 24],
+                iconAnchor: [50, 12]
             });
         }
 
@@ -907,21 +1200,17 @@
                 const polyline = L.polyline(route.points, {
                     color: route.color,
                     weight: route.weight,
-                    opacity: route.opacity,
-                    dashArray: route.dashArray
+                    opacity: route.opacity
                 }).addTo(map);
                 routeLayers.push(polyline);
             });
             
-            // 添加带文字标签的标记
+            // 添加标记
             dayData.markers.forEach(marker => {
-                const coord = marker.offset ? [marker.coord[0] + marker.offset[0] * 0.001, marker.coord[1] + marker.offset[1] * 0.001] : marker.coord;
-                
-                // 添加圆点标记
                 const color = getMarkerColor(marker.type);
-                const radius = getMarkerRadius(marker.type);
-                const circleMarker = L.circleMarker(coord, {
-                    radius: radius,
+                
+                const circleMarker = L.circleMarker(marker.coord, {
+                    radius: 8,
                     fillColor: color,
                     color: '#fff',
                     weight: 2,
@@ -930,29 +1219,25 @@
                 }).addTo(map);
                 markerLayers.push(circleMarker);
                 
-                // 添加文字标签（可点击）
                 const labelIcon = createLabelIcon(marker.name, marker.type);
-                const labelMarker = L.marker(coord, {icon: labelIcon}).addTo(map);
+                const labelMarker = L.marker(marker.coord, {icon: labelIcon}).addTo(map);
                 
-                // 生成高德地图导航链接（用真实地名，不是显示名）
-                const navName = marker.navName || marker.name.replace(/^[①②③④⑤⑥⑦⑧⑨].*\s/, '').replace(/Day\d+\s*[🎨🏔️⛽🏨✈️🚗💧💜🇨🇳🐉❄️🛍️🌸].*\s*/, '').replace(/[✈️🚗⛽🏨⭐🔥🐉💧🌸🌺⭐💜🇨🇳😴❄️🛍️🎖️🌲🛁🍜]/g, '').trim();
-                const amapUrl = `https://uri.amap.com/marker?position=${coord[1]},${coord[0]}&name=${encodeURIComponent(navName)}&coordinate=gaode&callnative=1`;
+                const navName = marker.navName || marker.name;
+                const amapUrl = `https://uri.amap.com/marker?position=${marker.coord[1]},${marker.coord[0]}&name=${encodeURIComponent(navName)}&coordinate=gaode&callnative=1`;
                 
-                // 绑定弹窗，包含打开高德地图按钮
                 const popupContent = `
-                    <div style="text-align:center;padding:5px;">
+                    <div style="text-align:center;">
                         <b style="font-size:14px;">${marker.name}</b><br>
-                        <span style="font-size:11px;color:#999;">${navName}</span><br>
                         <a href="${amapUrl}" target="_blank" style="
                             display:inline-block;
                             margin-top:8px;
                             padding:6px 16px;
-                            background:#1677ff;
+                            background:#6366f1;
                             color:white;
-                            border-radius:20px;
+                            border-radius:16px;
                             text-decoration:none;
-                            font-size:13px;
-                        ">📍 高德地图导航</a>
+                            font-size:12px;
+                        ">📍 导航</a>
                     </div>
                 `;
                 labelMarker.bindPopup(popupContent);
@@ -960,17 +1245,12 @@
                 markerLayers.push(labelMarker);
             });
             
-            // 调整地图视角
             map.setView(dayData.center, dayData.zoom);
         }
 
         function showDay(dayId) {
-            document.querySelectorAll('.day-content').forEach(el => {
-                el.classList.remove('active');
-            });
-            document.querySelectorAll('.tab').forEach(el => {
-                el.classList.remove('active');
-            });
+            document.querySelectorAll('.day-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
             
             document.getElementById(dayId).classList.add('active');
             event.target.classList.add('active');
@@ -978,7 +1258,7 @@
             drawDayRoute(dayId);
         }
 
-        // 初始绘制总览路线
+        // 初始绘制
         drawDayRoute('overview');
     </script>
 </body>
