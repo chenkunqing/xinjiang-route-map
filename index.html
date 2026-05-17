@@ -513,13 +513,23 @@
         .guide-content ul.checklist input[type="checkbox"] { width: 18px; height: 18px; margin-right: 8px; accent-color: #6366f1; }
         .spot-section { margin: 12px 0; padding: 10px; background: #f8fafc; border-radius: 8px; }
         .spot-name { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+        
+        /* 打印样式 */
+        @media print {
+            .map-container, .tabs-container, .guide-section, button { display: none !important; }
+            body { background: white; }
+            .day-content { display: block !important; page-break-after: always; }
+            .day-header { background: #6366f1; color: white; padding: 20px; }
+            .timeline-item { border-left: 2px solid #ddd; padding: 10px 20px; }
+            .header { background: #6366f1; color: white; padding: 20px; }
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>新疆9天自由行</h1>
         <p>2026.6.2 - 6.10</p>
-        <div style="margin-top:10px;"><button onclick="exportToImage()" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);color:white;padding:6px 12px;border-radius:16px;font-size:12px;cursor:pointer;">📷 导出图片</button></div>
+        <div style="margin-top:10px;"><button onclick="window.print()" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);color:white;padding:6px 12px;border-radius:16px;font-size:12px;cursor:pointer;">📄 导出PDF</button></div>
     </div>
     
     <div class="map-container">
@@ -1279,11 +1289,10 @@
     
     <div class="footer">
         <p>🗺️ 新疆9天自驾路线图 | 2026.6.2-6.10 | 大环线设计，无重复路段</p>
-        <p style="font-size:11px;color:#999;margin-top:4px;">版本 202605180226</p>
+        <p style="font-size:11px;color:#999;margin-top:4px;">版本 202605180227</p>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
         // 初始化地图
         const map = L.map('map').setView([42.5, 85], 6);
@@ -1699,7 +1708,6 @@
             
             document.body.appendChild(container);
             
-            html2canvas(container, {backgroundColor:'#f0f4ff',scale:2}).then(canvas => {
                 const link = document.createElement('a');
                 link.download = '新疆行程-' + activeDayId + '.png';
                 link.href = canvas.toDataURL('image/png');
