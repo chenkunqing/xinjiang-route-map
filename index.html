@@ -1322,10 +1322,11 @@
     
     <div class="footer">
         <p>🗺️ 新疆9天自驾路线图 | 2026.6.2-6.10 | 大环线设计，无重复路段</p>
-        <p style="font-size:11px;color:#999;margin-top:4px;">版本 202605180231</p>
+        <p style="font-size:11px;color:#999;margin-top:4px;">版本 202605180241</p>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
         // 初始化地图
         const map = L.map('map').setView([42.5, 85], 6);
@@ -1741,18 +1742,19 @@
             
             document.body.appendChild(container);
             
+            html2canvas(container, {backgroundColor:'#f0f4ff',scale:2}).then(canvas => {
                 const link = document.createElement('a');
                 link.download = '新疆行程-' + activeDayId + '.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
                 
                 document.body.removeChild(container);
-                btn.textContent = '📷 导出图片';
+                btn.textContent = '📄 导出PDF';
                 btn.disabled = false;
             }).catch(err => {
                 alert('导出失败：' + err);
                 document.body.removeChild(container);
-                btn.textContent = '📷 导出图片';
+                btn.textContent = '📄 导出PDF';
                 btn.disabled = false;
             });
         }
