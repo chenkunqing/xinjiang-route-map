@@ -1185,7 +1185,7 @@
     
     <div class="footer">
         <p>🗺️ 新疆9天自驾路线图 | 2026.6.2-6.10 | 大环线设计，无重复路段</p>
-        <p style="font-size:11px;color:#999;margin-top:4px;">版本 20260518 0211</p>
+        <p style="font-size:11px;color:#999;margin-top:4px;">版本 202605180216</p>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -1477,8 +1477,17 @@
                 mapLayers.push(polyline);
             });
             
+            // 获取要显示的标记 - 非overview时只显示当天的
+            let markers = dayData.markers;
+            if (dayId !== 'overview' && dayRoutes[dayId]) {
+                // 保持当天的markers不变
+            } else if (dayId === 'overview') {
+                // 总览时显示所有关键点
+                markers = dayData.markers;
+            }
+            
             // 添加标记
-            dayData.markers.forEach((marker, index) => {
+            markers.forEach((marker, index) => {
                 const color = getMarkerColor(marker.type);
                 const orderNum = index + 1;
                 
