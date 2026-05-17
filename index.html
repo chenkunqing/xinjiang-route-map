@@ -1185,7 +1185,7 @@
     
     <div class="footer">
         <p>🗺️ 新疆9天自驾路线图 | 2026.6.2-6.10 | 大环线设计，无重复路段</p>
-        <p style="font-size:11px;color:#999;margin-top:4px;">版本 202605180216</p>
+        <p style="font-size:11px;color:#999;margin-top:4px;">版本 202605180222</p>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -1499,6 +1499,7 @@
                     opacity: 1,
                     fillOpacity: 0.9
                 }).addTo(map);
+                mapLayers.push(circleMarker);
                 circleMarker.bindPopup(`<div style="text-align:center;font-size:14px;font-weight:600;">${orderNum}. ${marker.name}</div>`);
                 
                 const labelIcon = createLabelIcon(marker.name, marker.type, orderNum, dayId !== 'overview');
