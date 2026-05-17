@@ -523,7 +523,7 @@
         </div>
     </div>
     
-    <div class="legend-card">
+    <div class="legend-card" id="legend-card">
         <div class="legend-title">📍 每日路线</div>
         <div class="legend-grid">
             <div class="legend-item">
@@ -1481,15 +1481,27 @@
             }
             
             const legendCard = document.getElementById('legend-card');
+            const overview = document.getElementById('overview');
             
-            // 切换到某一天时，收起总览面板并隐藏图例
+            // 切换到某一天时，隐藏总览的路线卡片和图例
             if (dayId !== 'overview') {
-                const overview = document.getElementById('overview');
-                overview.querySelectorAll('.guide-content').forEach(el => el.style.display = 'none');
-                overview.querySelectorAll('.guide-title .arrow').forEach(el => el.classList.remove('open'));
-                legendCard.style.display = 'none';
+                // 隐藏图例
+                if (legendCard) legendCard.style.display = 'none';
+                // 隐藏总览中的route-card
+                overview.querySelectorAll('.route-card').forEach(el => el.style.display = 'none');
+                // 隐藏总览中的guide-section
+                overview.querySelectorAll('.guide-section').forEach(el => el.style.display = 'none');
+                // 隐藏高亮区块
+                overview.querySelectorAll('.highlight').forEach(el => el.style.display = 'none');
             } else {
-                legendCard.style.display = 'block';
+                // 显示图例
+                if (legendCard) legendCard.style.display = 'block';
+                // 显示总览中的route-card
+                overview.querySelectorAll('.route-card').forEach(el => el.style.display = 'block');
+                // 显示总览中的guide-section（保持折叠状态）
+                overview.querySelectorAll('.guide-section').forEach(el => el.style.display = 'block');
+                // 显示高亮区块
+                overview.querySelectorAll('.highlight').forEach(el => el.style.display = 'block');
             }
             
             drawDayRoute(dayId);
