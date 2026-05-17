@@ -507,6 +507,10 @@
         .guide-content ul, .guide-content ol { padding-left: 20px; margin: 8px 0; }
         .guide-content li { margin: 4px 0; }
         .guide-subtitle { font-weight: 600; font-size: 13px; margin: 12px 0 6px; color: #374151; }
+        .guide-content ul.checklist { list-style: none; padding-left: 0; }
+        .guide-content ul.checklist li { margin: 6px 0; }
+        .guide-content ul.checklist label { display: flex; align-items: center; cursor: pointer; }
+        .guide-content ul.checklist input[type="checkbox"] { width: 18px; height: 18px; margin-right: 8px; accent-color: #6366f1; }
         .spot-section { margin: 12px 0; padding: 10px; background: #f8fafc; border-radius: 8px; }
         .spot-name { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
     </style>
@@ -621,30 +625,30 @@
             <div class="guide-title" onclick="toggleGuide(this)">📋 出发前清单 <span class="arrow">▼</span></div>
             <div class="guide-content" style="display:none;">
                 <div class="guide-subtitle">🏛️ 证件办理（提前2周）</div>
-                <ul>
-                    <li>✅ 边防证：已办好</li>
-                    <li>☐ 确认两位驾驶员驾照有效</li>
-                    <li>☐ 租车订单加第二驾驶人</li>
+                <ul class="checklist" data-key="checklist-documents">
+                    <li><label><input type="checkbox" checked> 边防证：已办好</label></li>
+                    <li><label><input type="checkbox"> 确认两位驾驶员驾照有效</label></li>
+                    <li><label><input type="checkbox"> 租车订单加第二驾驶人</label></li>
                 </ul>
                 <div class="guide-subtitle">📱 提前预订（提前1-2周）</div>
-                <ul>
-                    <li>☐ 塔什库尔干酒店（Day 2住）</li>
-                    <li>☐ 特克斯县城酒店×2晚（Day 5-6住）</li>
-                    <li>☐ 乔尔玛住宿（Day 7住，选择少必须提前）</li>
-                    <li>☐ 乌鲁木齐机场酒店×2晚，确认05:30送机</li>
-                    <li>☐ 喀拉峻/赛里木湖门票提前买</li>
+                <ul class="checklist" data-key="checklist-booking">
+                    <li><label><input type="checkbox"> 塔什库尔干酒店（Day 2住）</label></li>
+                    <li><label><input type="checkbox"> 特克斯县城酒店×2晚（Day 5-6住）</label></li>
+                    <li><label><input type="checkbox"> 乔尔玛住宿（Day 7住，选择少必须提前）</label></li>
+                    <li><label><input type="checkbox"> 乌鲁木齐机场酒店×2晚，确认05:30送机</label></li>
+                    <li><label><input type="checkbox"> 喀拉峻/赛里木湖门票提前买</label></li>
                 </ul>
                 <div class="guide-subtitle">🎒 物品清单</div>
-                <ul>
-                    <li>冲锋衣或薄羽绒（达坂/草原0-10°C）</li>
-                    <li>防晒霜SPF50+ + 遮阳帽 + 墨镜</li>
-                    <li>红景天（长辈出发前3天开始吃）</li>
-                    <li>葡萄糖口服液、晕车药、感冒药</li>
-                    <li>氧气瓶（喀什药店买，约15-20元/瓶）</li>
-                    <li>大容量充电宝、车载手机支架</li>
-                    <li>干粮零食（Day 8独库午餐必备）</li>
-                    <li>身份证×3（检查站频繁查）</li>
-                    <li>少量现金200-300元</li>
+                <ul class="checklist" data-key="checklist-items">
+                    <li><label><input type="checkbox"> 冲锋衣或薄羽绒（达坂/草原0-10°C）</label></li>
+                    <li><label><input type="checkbox"> 防晒霜SPF50+ + 遮阳帽 + 墨镜</label></li>
+                    <li><label><input type="checkbox"> 红景天（长辈出发前3天开始吃）</label></li>
+                    <li><label><input type="checkbox"> 葡萄糖口服液、晕车药、感冒药</label></li>
+                    <li><label><input type="checkbox"> 氧气瓶（喀什药店买，约15-20元/瓶）</label></li>
+                    <li><label><input type="checkbox"> 大容量充电宝、车载手机支架</label></li>
+                    <li><label><input type="checkbox"> 干粮零食（Day 8独库午餐必备）</label></li>
+                    <li><label><input type="checkbox"> 身份证×3（检查站频繁查）</label></li>
+                    <li><label><input type="checkbox"> 少量现金200-300元</label></li>
                 </ul>
             </div>
         </div>
@@ -1499,6 +1503,18 @@
 
         // 初始绘制
         drawDayRoute('overview');
+        
+        // checkbox 保存到 localStorage
+        document.querySelectorAll('.checklist input[type="checkbox"]').forEach(cb => {
+            const key = cb.closest('.checklist').dataset.key;
+            const index = Array.from(cb.parentElement.parentElement.children).indexOf(cb.parentElement);
+            const saved = localStorage.getItem(key + '_' + index);
+            if (saved === 'true') cb.checked = true;
+            
+            cb.addEventListener('change', function() {
+                localStorage.setItem(key + '_' + index, this.checked);
+            });
+        });
     </script>
 </body>
 </html>
