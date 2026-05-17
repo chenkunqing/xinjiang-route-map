@@ -1611,6 +1611,44 @@
                 btn.disabled = false;
             });
         }
+        
+        // 导航链接功能
+        const navPlaces = {
+            '喀什徕宁机场': '喀什徕宁机场',
+            '喀什古城': '喀什古城',
+            '塔什库尔干': '塔什库尔干县',
+            '白沙湖': '白沙湖景区游客中心',
+            '喀拉库勒湖': '喀拉库勒湖景区入口',
+            '盘龙古道': '盘龙古道',
+            '赛里木湖': '赛里木湖东门游客服务中心',
+            '解忧公主薰衣草园': '解忧公主薰衣草园',
+            '霍尔果斯': '霍尔果斯国门',
+            '特克斯': '特克斯八卦城',
+            '喀拉峻': '喀拉峻草原',
+            '唐布拉': '唐布拉百里画廊',
+            '乔尔玛': '乔尔玛镇',
+            '独库公路': '独库公路',
+            '乌鲁木齐': '乌鲁木齐',
+            '大巴扎': '乌鲁木齐国际大巴扎'
+        };
+        
+        function addNavLinks() {
+            document.querySelectorAll('.timeline-content').forEach(el => {
+                if (el.dataset.navAdded) return;
+                let html = el.innerHTML;
+                for (const [place, navName] of Object.entries(navPlaces)) {
+                    const encoded = encodeURIComponent(navName);
+                    const amapUrl = `https://uri.amap.com/marker?position=${encodeURIComponent(place)}&name=${encoded}&coordinate=gaode&callnative=1`;
+                    const link = `<a href="${amapUrl}" target="_blank" style="color:#6366f1;text-decoration:underline;" onclick="event.stopPropagation();">📍 导航</a>`;
+                    html = html.replace(new RegExp(place + '(?![^<]*>)', 'g'), match => match + ' ' + link);
+                }
+                el.innerHTML = html;
+                el.dataset.navAdded = 'true';
+            });
+        }
+        
+        // 页面加载后添加导航链接
+        document.addEventListener('DOMContentLoaded', addNavLinks);
     </script>
 </body>
 </html>
