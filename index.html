@@ -519,6 +519,7 @@
     <div class="header">
         <h1>新疆9天自由行</h1>
         <p>2026.6.2 - 6.10</p>
+        <div style="margin-top:10px;"><button onclick="exportToImage()" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);color:white;padding:6px 12px;border-radius:16px;font-size:12px;cursor:pointer;">📷 导出图片</button></div>
     </div>
     
     <div class="map-container">
@@ -678,6 +679,43 @@
                     <tr style="background:#f8f8f8;"><td style="padding:6px;">Day 8 乌鲁木齐</td><td style="padding:6px;text-align:center;">6.5h</td><td style="padding:6px;text-align:center;">3h</td><td style="padding:6px;">大巴扎</td></tr>
                     <tr><td style="padding:6px;">Day 9 返程</td><td style="padding:6px;text-align:center;">—</td><td style="padding:6px;text-align:center;">—</td><td style="padding:6px;">赶飞机</td></tr>
                 </table>
+            </div>
+        </div>
+
+        <!-- 紧急联系人 -->
+        <div class="guide-section">
+            <div class="guide-title" onclick="toggleGuide(this)">📞 紧急联系人 <span class="arrow">▼</span></div>
+            <div class="guide-content" style="display:none;">
+                <ul class="checklist" data-key="checklist-emergency">
+                    <li><label><input type="checkbox"> 报警：110</label></li>
+                    <li><label><input type="checkbox"> 急救：120</label></li>
+                    <li><label><input type="checkbox"> 火警：119</label></li>
+                    <li><label><input type="checkbox"> 新疆文旅厅：0991-12301</label></li>
+                    <li><label><input type="checkbox"> 独库公路路况：0991-9680112</label></li>
+                    <li><label><input type="checkbox"> 新疆高速：0991-12122</label></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 高原反应 -->
+        <div class="guide-section">
+            <div class="guide-title" onclick="toggleGuide(this)">🫀 高原反应自查 <span class="arrow">▼</span></div>
+            <div class="guide-content" style="display:none;">
+                <div class="guide-subtitle">常见症状</div>
+                <ul style="padding-left:20px;">
+                    <li>头痛、胸闷、气短</li>
+                    <li>失眠、食欲减退、疲倦</li>
+                    <li>嘴唇/指甲发紫</li>
+                </ul>
+                <div class="guide-subtitle">应对措施</div>
+                <ul style="padding-left:20px;">
+                    <li>吸氧（氧气瓶/车载制氧机）</li>
+                    <li>喝葡萄糖水/红景天口服液</li>
+                    <li>动作放慢，避免剧烈运动</li>
+                    <li>保证睡眠，不要熬夜</li>
+                    <li>必要时及时就医</li>
+                </ul>
+                <div class="tip" style="margin-top:10px;"><strong>💡 提醒</strong>塔县海拔3100m，喀拉库勒湖3600m，盤龙古道4200m。到达当天不要洗澡！</div>
             </div>
         </div>
 
@@ -1151,6 +1189,7 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
         // 初始化地图
         const map = L.map('map').setView([42.5, 85], 6);
@@ -1523,6 +1562,55 @@
                 localStorage.setItem(key + '_' + index, this.checked);
             });
         });
+        
+        // 导出图片功能
+        function exportToImage() {
+            const btn = document.querySelector('button[onclick="exportToImage()"]');
+            btn.textContent = '导出中...';
+            btn.disabled = true;
+            
+            // 隐藏不需要的元素
+            const mapContainer = document.querySelector('.map-container');
+            const legendCard = document.getElementById('legend-card');
+            const tabsContainer = document.querySelector('.tabs-container');
+            
+            // 创建一个临时的容器来捕获内容
+            const container = document.createElement('div');
+            container.style.cssText = 'width:800px;padding:20px;background:linear-gradient(135deg,#f0f4ff,#faf5ff);';
+            
+            // 克隆header
+            const header = document.querySelector('.header').cloneNode(true);
+            header.querySelector('button')?.remove();
+            container.appendChild(header);
+            
+            // 获取当前tab的内容
+            const activeTab = document.querySelector('.tab.active');
+            const activeDayId = activeTab?.getAttribute('onclick')?.match(/'(day\d+|overview)'/)?.[1] || 'overview';
+            const dayContent = document.getElementById(activeDayId);
+            
+            if (dayContent) {
+                const content = dayContent.cloneNode(true);
+                container.appendChild(content);
+            }
+            
+            document.body.appendChild(container);
+            
+            html2canvas(container, {backgroundColor:'#f0f4ff',scale:2}).then(canvas => {
+                const link = document.createElement('a');
+                link.download = '新疆行程-' + activeDayId + '.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                document.body.removeChild(container);
+                btn.textContent = '📷 导出图片';
+                btn.disabled = false;
+            }).catch(err => {
+                alert('导出失败：' + err);
+                document.body.removeChild(container);
+                btn.textContent = '📷 导出图片';
+                btn.disabled = false;
+            });
+        }
     </script>
 </body>
 </html>
