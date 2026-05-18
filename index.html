@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>新疆9天自驾路线图 - 2026.6.2-6.10</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -476,6 +478,21 @@
                 <div class="stat-label">大环线</div>
             </div>
         </div>
+        <button onclick="exportPDF()" style="
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            color: #6366f1;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        ">📄 导出PDF</button>
     </div>
     
     <div class="map-container">
@@ -1260,6 +1277,80 @@
 
         // 初始绘制
         drawDayRoute('overview');
+
+        // 导出PDF功能
+        async function exportPDF() {
+            const btn = document.querySelector('button[onclick="exportPDF()"]');
+            btn.textContent = '⏳ 生成中...';
+            btn.disabled = true;
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('l', 'mm', 'a4');
+                const pageWidth = 297;
+                const pageHeight = 210;
+                const margin = 10;
+
+                // 标题
+                pdf.setFontSize(24);
+                pdf.setTextColor(99, 102, 241);
+                pdf.text('新疆9天自驾路线图', pageWidth / 2, 20, { align: 'center' });
+
+                pdf.setFontSize(12);
+                pdf.setTextColor(100, 116, 139);
+                pdf.text('2026.6.2 - 6.10 · 南疆+北疆大环线', pageWidth / 2, 28, { align: 'center' });
+
+                // 截图地图
+                const mapElement = document.getElementById('map');
+                const canvas = await html2canvas(mapElement, {
+                    useCORS: true,
+                    scale: 2,
+                    backgroundColor: '#f8fafc'
+                });
+
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = pageWidth - margin * 2;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+                pdf.addImage(imgData, 'PNG', margin, 35, imgWidth, imgHeight);
+
+                // 行程摘要
+                pdf.setFontSize(14);
+                pdf.setTextColor(30, 41, 59);
+                pdf.text('行程概览', margin, 35 + imgHeight + 10);
+
+                pdf.setFontSize(10);
+                pdf.setTextColor(71, 85, 105);
+                const summary = `
+Day1 喀什: 喀什古城 → 艾提尕尔清真寺 → 夜市
+Day2 塔县: 喀什 → 奥依塔克冰川 → 慕士塔格峰 → 塔县
+Day3 盘龙: 塔县 → 盘龙古道 → 班迪尔蓝湖 → 喀什
+Day4 伊犁: 乌鲁木齐 → 赛里木湖 → 精河
+Day5 伊犁: 精河 → 果子沟 → 薰衣草 → 霍尔果斯 → 特克斯
+Day6 特克斯: 喀拉峻草原一日游
+Day7 唐布拉: 特克斯 → 唐布拉百里画廊 → 乔尔玛
+Day8 独库: 乔尔玛 → 哈希勒根达坂 → 独山子 → 乌鲁木齐
+Day9 返程: 乌鲁木齐机场还车返程
+                `.trim();
+
+                const lines = pdf.splitTextToSize(summary, pageWidth - margin * 2);
+                pdf.text(lines, margin, 35 + imgHeight + 18);
+
+                pdf.save('新疆9天自驾路线图.pdf');
+
+                btn.textContent = '✅ 已导出';
+                setTimeout(() => {
+                    btn.textContent = '📄 导出PDF';
+                    btn.disabled = false;
+                }, 2000);
+
+            } catch (error) {
+                console.error('导出PDF失败:', error);
+                alert('导出PDF失败，请重试');
+                btn.textContent = '📄 导出PDF';
+                btn.disabled = false;
+            }
+        }
     </script>
 </body>
 </html>
