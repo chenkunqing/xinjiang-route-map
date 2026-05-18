@@ -1657,6 +1657,7 @@
         }
 
         function showDay(dayId, btn) {
+            console.log('showDay called:', dayId);
             document.querySelectorAll('.day-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
             
