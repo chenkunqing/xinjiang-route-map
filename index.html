@@ -515,6 +515,220 @@
         .guide-content ul.checklist input[type="checkbox"] { width: 18px; height: 18px; margin-right: 8px; accent-color: #6366f1; }
         .spot-section { margin: 12px 0; padding: 10px; background: #f8fafc; border-radius: 8px; }
         .spot-name { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+
+        /* 每日概览卡片 */
+        .overview-section-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 20px 0 12px;
+            padding-left: 10px;
+            border-left: 4px solid var(--primary);
+        }
+        .day-cards-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin: 12px 0;
+        }
+        .day-card {
+            background: white;
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 4px solid var(--primary-light);
+        }
+        .day-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        .day-card.card-south { border-left-color: #dc2626; }
+        .day-card.card-north { border-left-color: #2563eb; }
+        .day-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .day-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        .day-card-date {
+            font-size: 11px;
+            color: var(--gray);
+            background: var(--light);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        .day-card-route {
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 8px;
+        }
+        .day-card-stats {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .day-card-stat {
+            font-size: 11px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .day-card-stat-icon {
+            font-size: 13px;
+        }
+        .day-card-spots {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .day-card-spot {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: #ede9fe;
+            color: #6d28d9;
+        }
+        .day-card-hotel {
+            font-size: 11px;
+            color: var(--gray);
+            margin-top: 6px;
+        }
+
+        /* 里程海拔表格 */
+        .mileage-table-wrapper {
+            overflow-x: auto;
+            margin: 12px 0;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow);
+        }
+        .mileage-table {
+            width: 100%;
+            font-size: 12px;
+            border-collapse: collapse;
+            background: white;
+            min-width: 500px;
+        }
+        .mileage-table th {
+            padding: 10px 8px;
+            text-align: left;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            font-weight: 500;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+        .mileage-table td {
+            padding: 8px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .mileage-table tr:hover { background: #f8fafc; }
+        .mileage-table .altitude-high {
+            background: #fff7ed;
+            font-weight: 500;
+        }
+        .mileage-table .altitude-high td {
+            border-left: 3px solid var(--warning);
+        }
+        .difficulty-stars { color: var(--warning); letter-spacing: 1px; }
+        .mileage-total {
+            background: var(--light);
+            font-weight: 600;
+        }
+
+        /* 时间轴甘特图 */
+        .gantt-overview {
+            background: white;
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin: 12px 0;
+            box-shadow: var(--shadow);
+            overflow-x: auto;
+        }
+        .gantt-legend {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .gantt-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            color: var(--gray);
+        }
+        .gantt-legend-color {
+            width: 14px;
+            height: 10px;
+            border-radius: 3px;
+        }
+        .gantt-header {
+            display: flex;
+            margin-left: 70px;
+            margin-bottom: 6px;
+        }
+        .gantt-hour {
+            flex: 1;
+            font-size: 10px;
+            color: var(--gray);
+            text-align: center;
+            min-width: 0;
+        }
+        .gantt-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .gantt-label {
+            width: 70px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--dark);
+            flex-shrink: 0;
+        }
+        .gantt-bars {
+            flex: 1;
+            height: 22px;
+            background: #f1f5f9;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            min-width: 200px;
+        }
+        .gantt-bar {
+            position: absolute;
+            top: 2px;
+            height: 18px;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            color: white;
+            font-weight: 500;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .gantt-bar-drive { background: #3b82f6; }
+        .gantt-bar-sight { background: #10b981; }
+        .gantt-bar-meal { background: #f59e0b; }
+        .gantt-bar-rest { background: #94a3b8; }
+        .gantt-bar-flight { background: #8b5cf6; }
+
+        @media (min-width: 768px) {
+            .day-cards-grid { grid-template-columns: repeat(2, 1fr); }
+            .gantt-header { margin-left: 90px; }
+            .gantt-label { width: 90px; font-size: 12px; }
+        }
         
         /* 打印样式 */
         @media print {
@@ -631,6 +845,391 @@
                 <li>唐布拉段（新源→乔尔玛）：100km无加油站</li>
                 <li>独库北段（乔尔玛→独山子）：150km无加油站</li>
             </ul>
+        </div>
+
+        <!-- 每日卡片式摘要 -->
+        <div class="overview-section-title">📋 每日行程速览</div>
+        <div class="day-cards-grid">
+            <div class="day-card card-south" onclick="goToDay('day1')">
+                <div class="day-card-header">
+                    <span class="day-card-title">Day 1 · 抵达喀什</span>
+                    <span class="day-card-date">6/2 周二</span>
+                </div>
+                <div class="day-card-route">落地喀什 → 古城夜游</div>
+                <div class="day-card-stats">
+                    <span class="day-card-stat"><span class="day-card-stat-icon">🚗</span> 10km / 0.5h</span>
+                    <span class="day-card-stat"><span class="day-card-stat-icon">⛰️</span> 1300m</span>
+                </div>
+                <div class="day-card-spots">
+                    <span class="day-card-spot">喀什古城</span>
+                    <span class="day-card-spot">彩虹巷</span>
+                    <span class="day-card-spot">百年老茶馆</span>
+                </div>
+                <div class="day-card-hotel">🏨 喀什古城附近酒店</div>
+            </div>
+
+            <div class="day-card card-south" onclick="goToDay('day2')">
+                <div class="day-card-header">
+                    <span class="day-card-title">Day 2 · G314高原线</span>
+                    <span class="day-card-date">6/3 周三</span>
+                </div>
+                <div class="day-card-route">喀什 → 白沙湖 → 喀拉库勒湖 → 塔县</div>
+                <div class="day-card-stats">
+                    <span class="day-card-stat"><span class="day-card-stat-icon">🚗</span> 300km / 3h</span>
+                    <span class="day-card-stat"><span class="day-card-stat-icon">⛰️</span> 3600m</span>
+                </div>
+                <div class="day-card-spots">
+                    <span class="day-card-spot">白沙湖</span>
+                    <span class="day-card-spot">喀拉库勒湖</span>
+                    <span class="day-card-spot">慕士塔格峰</span>
+                </div>
+                <div class="day-card-hotel">🏨 塔什库尔干县城</div>
+            </div>
+
+            <div class="day-card card-south" onclick="goToDay('day3')">
+                <div class="day-card-header">
+                    <span class="day-card-title">Day 3 · 盘龙古道 + 飞乌市</span>
+                    <span class="day-card-date">6/4 周四</span>
+                </div>
+                <div class="day-card-route">塔县 → 盘龙古道 → 班迪尔蓝湖 → 喀什 ✈️ 乌鲁木齐</div>
+                <div class="day-card-stats">
+                    <span class="day-card-stat"><span class="day-card-stat-icon">🚗</span> 290km / 5.5h</span>
+                    <span class="day-card-stat"><span class="day-card-stat-icon">✈️</span> 飞行2.25h</span>
+                    <span class="day-card-stat"><span class="day-card-stat-icon">⛰️</span> 4200m</span>
+                </div>
+                <div class="day-card-spots">
+                    <span class="day-card-spot">盘龙古道</span>
+                    <span class="day-card-spot">班迪尔蓝湖</span>
+                </div>
+                <div class="day-card-hotel">🏨 乌鲁木齐机场附近</div>
+            </div>
+
+            <div class="day-card card-north" onclick="goToDay('day4')">
+                <div class="day-card-header">
+                    <span class="day-card-title">Day 4 · 赛里木湖</span>
+                    <span class="day-card-date">6/5 周五</span>
+                </div>
+                <div class="day-card-route">乌鲁木齐 → 果子沟 → 赛里木湖</div>
+                <div class="day-card-stats">
+                    <span class="day-card-stat"><span class="day-card-stat-icon">🚗</span> 560km / 6.5h</span>
+                    <span class="day-card-stat"><span class="day-card-stat-icon">⛰️</span> 2070m</span>
+                </div>
+                <div class="day-card-spots">
+                    <span class="day-card-spot">果子沟大桥</span>
+                    <span class="day-card-spot">赛里木湖日落</span>
+                </div>
+                <div class="day-card-hotel">🏨 赛里木湖景区周边</div>
+            </div>
+
+            <div class="day-card card-north" onclick="goToDay('day5')">
+                <div class="day-card-header">
+                    <span class="day-card-title">Day 5 · 霍城 + 特克斯</span>
+                    <span class="day-card-date">6/6 周六</span>
+                </div>
+                <div class="day-card-route">赛里木湖 → 霍城薰衣草 → 霍尔果斯 → 特克斯</div>
+                <div class="day-card-stats">
+                    <span class="day-card-stat"><span class="day-card-stat-icon">🚗</span> 350km / 4.5h</span>
+                    <span class="day-card-stat"><span class="day-card-stat-icon">⛰️</span> 1100m</span>
+                </div>
+                <div class="day-card-spots">
+                    <span class="day-card-spot">霍城薰衣草</span>
+                    <span class="day-card-spot">霍尔果斯国门</span>
+                    <span class="day-card-spot">特克斯离街</span>
+                </div>
+                <div class="day-card-hotel">🏨 特克斯县城</div>
+            </div>
+
+            <div class="day-card card-north" onclick="goToDay('day6')">
+                <div class="day-card-header">
+                    <span class="day-card-title">Day 6 · 喀拉峻草原</span>
+                    <span class="day-card-date">6/7 周日</span>
+                </div>
+                <div class="day-card-route">特克斯 → 喀拉峻全天游览 → 特克斯</div>
+                <div class="day-card-stats">
+                    <span class="day-card-stat"><span class="day-card-stat-icon">🚗</span> 60km / 1.5h</span>
+                    <span class="day-card-stat"><span class="day-card-stat-icon">⛰️</span> 2000m</span>
+                </div>
+                <div class="day-card-spots">
+                    <span class="day-card-spot">猎鹰台</span>
+                    <span class="day-card-spot">鲜花台</span>
+                    <span class="day-card-spot">人体草原</span>
+                </div>
+                <div class="day-card-hotel">🏨 特克斯县城（连住）</div>
+            </div>
+
+            <div class="day-card card-north" onclick="goToDay('day7')">
+                <div class="day-card-header">
+                    <span class="day-card-title">Day 7 · 百里画廊</span>
+                    <span class="day-card-date">6/8 周一</span>
+                </div>
+                <div class="day-card-route">特克斯 → 唐布拉百里画廊 → 乔尔玛</div>
+                <div class="day-card-stats">
+                    <span class="day-card-stat"><span class="day-card-stat-icon">🚗</span> 200km / 3h</span>
+                    <span class="day-card-stat"><span class="day-card-stat-icon">⛰️</span> 2200m</span>
+                </div>
+                <div class="day-card-spots">
+                    <span class="day-card-spot">唐布拉草原</span>
+                    <span class="day-card-spot">百里画廊</span>
+                    <span class="day-card-spot">乔尔玛烈士陵园</span>
+                </div>
+                <div class="day-card-hotel">🏨 乔尔玛镇</div>
+            </div>
+
+            <div class="day-card card-north" onclick="goToDay('day8')">
+                <div class="day-card-header">
+                    <span class="day-card-title">Day 8 · 独库公路</span>
+                    <span class="day-card-date">6/9 周二</span>
+                </div>
+                <div class="day-card-route">乔尔玛 → 独库公路 → 独山子 → 乌鲁木齐</div>
+                <div class="day-card-stats">
+                    <span class="day-card-stat"><span class="day-card-stat-icon">🚗</span> 500km / 6.5h</span>
+                    <span class="day-card-stat"><span class="day-card-stat-icon">⛰️</span> 3400m</span>
+                </div>
+                <div class="day-card-spots">
+                    <span class="day-card-spot">独库公路</span>
+                    <span class="day-card-spot">哈希勒根达坂</span>
+                    <span class="day-card-spot">大巴扎</span>
+                </div>
+                <div class="day-card-hotel">🏨 乌鲁木齐机场附近</div>
+            </div>
+
+            <div class="day-card" onclick="goToDay('day9')">
+                <div class="day-card-header">
+                    <span class="day-card-title">Day 9 · 返程</span>
+                    <span class="day-card-date">6/10 周三</span>
+                </div>
+                <div class="day-card-route">乌鲁木齐 → 各回各家</div>
+                <div class="day-card-stats">
+                    <span class="day-card-stat"><span class="day-card-stat-icon">✈️</span> 返程航班</span>
+                </div>
+                <div class="day-card-spots">
+                    <span class="day-card-spot">睡到自然醒</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 里程与海拔表格 -->
+        <div class="overview-section-title">📊 里程与海拔一览</div>
+        <div class="mileage-table-wrapper">
+            <table class="mileage-table">
+                <thead>
+                    <tr>
+                        <th>天数</th>
+                        <th>路线</th>
+                        <th>里程</th>
+                        <th>最高海拔</th>
+                        <th>难度</th>
+                        <th>核心景点</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Day 1</td>
+                        <td>喀什市内</td>
+                        <td>10km</td>
+                        <td>1300m</td>
+                        <td><span class="difficulty-stars">★☆☆☆☆</span></td>
+                        <td>喀什古城</td>
+                    </tr>
+                    <tr class="altitude-high">
+                        <td>Day 2</td>
+                        <td>喀什→塔县</td>
+                        <td>300km</td>
+                        <td>3600m</td>
+                        <td><span class="difficulty-stars">★★★☆☆</span></td>
+                        <td>白沙湖、喀拉库勒湖</td>
+                    </tr>
+                    <tr class="altitude-high">
+                        <td>Day 3</td>
+                        <td>塔县→喀什✈️乌市</td>
+                        <td>290km+飞</td>
+                        <td>4200m</td>
+                        <td><span class="difficulty-stars">★★★★☆</span></td>
+                        <td>盘龙古道、班迪尔蓝湖</td>
+                    </tr>
+                    <tr>
+                        <td>Day 4</td>
+                        <td>乌鲁木齐→赛里木湖</td>
+                        <td>560km</td>
+                        <td>2070m</td>
+                        <td><span class="difficulty-stars">★★★☆☆</span></td>
+                        <td>果子沟、赛里木湖</td>
+                    </tr>
+                    <tr>
+                        <td>Day 5</td>
+                        <td>赛里木湖→特克斯</td>
+                        <td>350km</td>
+                        <td>1100m</td>
+                        <td><span class="difficulty-stars">★★☆☆☆</span></td>
+                        <td>霍城薰衣草、霍尔果斯</td>
+                    </tr>
+                    <tr>
+                        <td>Day 6</td>
+                        <td>喀拉峻全天</td>
+                        <td>60km</td>
+                        <td>2000m</td>
+                        <td><span class="difficulty-stars">★☆☆☆☆</span></td>
+                        <td>猎鹰台、鲜花台</td>
+                    </tr>
+                    <tr>
+                        <td>Day 7</td>
+                        <td>特克斯→乔尔玛</td>
+                        <td>200km</td>
+                        <td>2200m</td>
+                        <td><span class="difficulty-stars">★★☆☆☆</span></td>
+                        <td>唐布拉百里画廊</td>
+                    </tr>
+                    <tr class="altitude-high">
+                        <td>Day 8</td>
+                        <td>乔尔玛→乌鲁木齐</td>
+                        <td>500km</td>
+                        <td>3400m</td>
+                        <td><span class="difficulty-stars">★★★★★</span></td>
+                        <td>独库公路、大巴扎</td>
+                    </tr>
+                    <tr>
+                        <td>Day 9</td>
+                        <td>返程</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td><span class="difficulty-stars">☆☆☆☆☆</span></td>
+                        <td>睡觉✈️回家</td>
+                    </tr>
+                    <tr class="mileage-total">
+                        <td colspan="2">总计</td>
+                        <td>~2,270km</td>
+                        <td>最高4200m</td>
+                        <td colspan="2">驾驶约32h + 飞行2.25h</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 每日时间轴可视化 -->
+        <div class="overview-section-title">⏰ 每日时间分配</div>
+        <div class="gantt-overview">
+            <div class="gantt-legend">
+                <div class="gantt-legend-item"><div class="gantt-legend-color" style="background:#3b82f6;"></div>驾驶</div>
+                <div class="gantt-legend-item"><div class="gantt-legend-color" style="background:#10b981;"></div>游览</div>
+                <div class="gantt-legend-item"><div class="gantt-legend-color" style="background:#f59e0b;"></div>用餐</div>
+                <div class="gantt-legend-item"><div class="gantt-legend-color" style="background:#94a3b8;"></div>休息</div>
+                <div class="gantt-legend-item"><div class="gantt-legend-color" style="background:#8b5cf6;"></div>飞行</div>
+            </div>
+            <div class="gantt-header">
+                <span class="gantt-hour">8</span>
+                <span class="gantt-hour">9</span>
+                <span class="gantt-hour">10</span>
+                <span class="gantt-hour">11</span>
+                <span class="gantt-hour">12</span>
+                <span class="gantt-hour">13</span>
+                <span class="gantt-hour">14</span>
+                <span class="gantt-hour">15</span>
+                <span class="gantt-hour">16</span>
+                <span class="gantt-hour">17</span>
+                <span class="gantt-hour">18</span>
+                <span class="gantt-hour">19</span>
+                <span class="gantt-hour">20</span>
+                <span class="gantt-hour">21</span>
+                <span class="gantt-hour">22</span>
+                <span class="gantt-hour">23</span>
+            </div>
+            <!-- Day1: 16:10到达，17-18入住，20-22:30古城+夜市 -->
+            <div class="gantt-row">
+                <span class="gantt-label">Day1 喀什</span>
+                <div class="gantt-bars">
+                    <div class="gantt-bar gantt-bar-drive" style="left:54%;width:6%;" title="取车">车</div>
+                    <div class="gantt-bar gantt-bar-rest" style="left:60%;width:13%;" title="入住休整">休</div>
+                    <div class="gantt-bar gantt-bar-sight" style="left:80%;width:13%;" title="古城夜游">古城</div>
+                    <div class="gantt-bar gantt-bar-meal" style="left:93%;width:4%;" title="夜市">吃</div>
+                </div>
+            </div>
+            <!-- Day2: 10:00出发，10:30-13:00开车G314，13-13:45白沙湖，14-15喀拉库勒湖，15-17:00继续开，17到塔县 -->
+            <div class="gantt-row">
+                <span class="gantt-label">Day2 塔县</span>
+                <div class="gantt-bars">
+                    <div class="gantt-bar gantt-bar-meal" style="left:13%;width:4%;" title="早午餐">吃</div>
+                    <div class="gantt-bar gantt-bar-drive" style="left:17%;width:16%;" title="G314喀什→白沙湖">G314</div>
+                    <div class="gantt-bar gantt-bar-sight" style="left:33%;width:6%;" title="白沙湖">白沙湖</div>
+                    <div class="gantt-bar gantt-bar-sight" style="left:40%;width:7%;" title="喀拉库勒湖">喀湖</div>
+                    <div class="gantt-bar gantt-bar-drive" style="left:47%;width:13%;" title="开往塔县">开</div>
+                    <div class="gantt-bar gantt-bar-rest" style="left:60%;width:10%;" title="入住休息">休</div>
+                </div>
+            </div>
+            <!-- Day3: 9:30出发，9:30-10:30盘龙古道，10:30-11:30班迪尔蓝湖，11:30-15:00开回喀什，15-16还车，19:30飞乌市，22:00到 -->
+            <div class="gantt-row">
+                <span class="gantt-label">Day3 盘龙</span>
+                <div class="gantt-bars">
+                    <div class="gantt-bar gantt-bar-sight" style="left:10%;width:7%;" title="盘龙古道">盘龙</div>
+                    <div class="gantt-bar gantt-bar-sight" style="left:17%;width:6%;" title="班迪尔蓝湖">蓝湖</div>
+                    <div class="gantt-bar gantt-bar-drive" style="left:23%;width:23%;" title="返回喀什">回喀什</div>
+                    <div class="gantt-bar gantt-bar-rest" style="left:47%;width:10%;" title="还车+候机">候机</div>
+                    <div class="gantt-bar gantt-bar-flight" style="left:77%;width:15%;" title="飞乌鲁木齐 19:30-22:00">✈️乌市</div>
+                </div>
+            </div>
+            <!-- Day4: 8:00取车出发，8-14:30开赛里木湖(含午餐1h)，14:30-15入湖，15-20环湖+日落，20-21晚餐 -->
+            <div class="gantt-row">
+                <span class="gantt-label">Day4 赛湖</span>
+                <div class="gantt-bars">
+                    <div class="gantt-bar gantt-bar-drive" style="left:0%;width:40%;" title="乌鲁木齐→赛里木湖 6.5h">乌市→赛湖</div>
+                    <div class="gantt-bar gantt-bar-meal" style="left:40%;width:4%;" title="午餐">吃</div>
+                    <div class="gantt-bar gantt-bar-sight" style="left:44%;width:33%;" title="环湖+日落">环湖日落</div>
+                    <div class="gantt-bar gantt-bar-meal" style="left:80%;width:5%;" title="晚餐">吃</div>
+                </div>
+            </div>
+            <!-- Day5: 8:00出发赛湖日出，9:30开车→霍城11:00，11-12薰衣草，12:30-13:30午餐，14-15霍尔果斯，15-18开特克斯，20-22夜市 -->
+            <div class="gantt-row">
+                <span class="gantt-label">Day5 特克斯</span>
+                <div class="gantt-bars">
+                    <div class="gantt-bar gantt-bar-sight" style="left:0%;width:10%;" title="赛里木湖日出">日出</div>
+                    <div class="gantt-bar gantt-bar-drive" style="left:10%;width:10%;" title="→霍城">开</div>
+                    <div class="gantt-bar gantt-bar-sight" style="left:20%;width:7%;" title="薰衣草">薰衣草</div>
+                    <div class="gantt-bar gantt-bar-meal" style="left:27%;width:5%;" title="午餐">吃</div>
+                    <div class="gantt-bar gantt-bar-sight" style="left:33%;width:7%;" title="霍尔果斯">国门</div>
+                    <div class="gantt-bar gantt-bar-drive" style="left:40%;width:20%;" title="→特克斯">开</div>
+                    <div class="gantt-bar gantt-bar-sight" style="left:80%;width:13%;" title="离街夜市">离街</div>
+                </div>
+            </div>
+            <!-- Day6: 8:30开车→喀拉峻9:30，9:30-17:00景区全天，17-18:30回特克斯，19-20晚餐 -->
+            <div class="gantt-row">
+                <span class="gantt-label">Day6 喀拉峻</span>
+                <div class="gantt-bars">
+                    <div class="gantt-bar gantt-bar-drive" style="left:3%;width:7%;" title="→喀拉峻">开</div>
+                    <div class="gantt-bar gantt-bar-sight" style="left:10%;width:50%;" title="喀拉峻全天游览">喀拉峻全天</div>
+                    <div class="gantt-bar gantt-bar-drive" style="left:60%;width:10%;" title="回特克斯">回</div>
+                    <div class="gantt-bar gantt-bar-meal" style="left:73%;width:7%;" title="晚餐">吃</div>
+                </div>
+            </div>
+            <!-- Day7: 9:00出发，9-10开，10-12唐布拉沿途，12-13午餐，13-16百里画廊停留，16-17到乔尔玛 -->
+            <div class="gantt-row">
+                <span class="gantt-label">Day7 画廊</span>
+                <div class="gantt-bars">
+                    <div class="gantt-bar gantt-bar-drive" style="left:7%;width:7%;" title="出发">开</div>
+                    <div class="gantt-bar gantt-bar-sight" style="left:14%;width:13%;" title="唐布拉沿途风光">画廊</div>
+                    <div class="gantt-bar gantt-bar-meal" style="left:27%;width:5%;" title="午餐">吃</div>
+                    <div class="gantt-bar gantt-bar-sight" style="left:33%;width:20%;" title="百里画廊停留">停留拍照</div>
+                    <div class="gantt-bar gantt-bar-drive" style="left:53%;width:7%;" title="→乔尔玛">开</div>
+                    <div class="gantt-bar gantt-bar-rest" style="left:60%;width:10%;" title="入住休息">休</div>
+                </div>
+            </div>
+            <!-- Day8: 7:00出发独库，7-13独库公路(含停留)，13-14午餐干粮，14-17:30独山子→乌鲁木齐，18-20大巴扎+晚餐 -->
+            <div class="gantt-row">
+                <span class="gantt-label">Day8 独库</span>
+                <div class="gantt-bars">
+                    <div class="gantt-bar gantt-bar-drive" style="left:0%;width:20%;" title="独库公路北段">独库</div>
+                    <div class="gantt-bar gantt-bar-sight" style="left:20%;width:13%;" title="达坂停留拍照">达坂</div>
+                    <div class="gantt-bar gantt-bar-meal" style="left:33%;width:4%;" title="干粮午餐">吃</div>
+                    <div class="gantt-bar gantt-bar-drive" style="left:37%;width:23%;" title="独山子→乌鲁木齐">→乌市</div>
+                    <div class="gantt-bar gantt-bar-sight" style="left:67%;width:10%;" title="大巴扎">大巴扎</div>
+                    <div class="gantt-bar gantt-bar-meal" style="left:77%;width:7%;" title="晚餐">吃</div>
+                </div>
+            </div>
+            <!-- Day9: 5:30送机 -->
+            <div class="gantt-row">
+                <span class="gantt-label">Day9 返程</span>
+                <div class="gantt-bars">
+                    <div class="gantt-bar gantt-bar-flight" style="left:0%;width:15%;" title="05:30送机+飞回家">✈️回家</div>
+                </div>
+            </div>
         </div>
 
         <!-- 出发前清单 -->
@@ -1656,6 +2255,11 @@
             });
             
             map.setView(dayData.center, dayData.zoom);
+        }
+
+        function goToDay(dayId) {
+            const btn = document.querySelector('.tab[onclick*="' + dayId + '"]');
+            showDay(dayId, btn);
         }
 
         function showDay(dayId, btn) {
