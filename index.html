@@ -1657,6 +1657,9 @@
         }
 
         function showDay(dayId, btn) {
+            // Debug: show which day was clicked
+            document.getElementById('overview').insertAdjacentHTML('afterbegin', '<div style="background:red;color:white;padding:5px;">Clicked: ' + dayId + '</div>');
+            
             const el = document.getElementById(dayId);
             if (!el) return;
             
