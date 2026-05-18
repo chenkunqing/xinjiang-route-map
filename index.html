@@ -1658,6 +1658,12 @@
 
         function showDay(dayId, btn) {
             console.log('showDay called:', dayId);
+            const el = document.getElementById(dayId);
+            console.log('Element found:', !!el, dayId);
+            if (!el) {
+                alert('Element not found: ' + dayId);
+                return;
+            }
             document.querySelectorAll('.day-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
             
