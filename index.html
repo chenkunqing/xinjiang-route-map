@@ -1931,6 +1931,7 @@
         
         // 高德地图瓦片
         const AMAP_KEY = '11f75d76b215d1706a5309de5eac85c1';
+        const routeCache = {};
         L.tileLayer(`https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}&key=${AMAP_KEY}`, {
             subdomains: '1234',
             attribution: '© 高德地图',
@@ -1989,13 +1990,13 @@
             '喀拉峻猎鹰台': [43.1800, 81.9200],
             '阔克苏大峡谷': [43.0800, 81.9500],
             '新源县城': [43.4312, 83.2512],
-            '唐布拉百花谷': [43.5512, 84.0512],
+            '唐布拉百花谷': [43.718426, 83.919793],
             '唐布拉仙女湖': [43.5200, 84.0800],
             '唐布拉大草原': [43.5000, 84.1000],
             '阿克塔斯瀑布': [43.4800, 84.1200],
-            '乔尔玛镇': [43.2512, 84.1512],
-            '哈希勒根达坂': [43.5500, 84.5500],
-            '哈希勒根雪墙': [43.5510, 84.5510],
+            '乔尔玛镇': [43.653744,84.382897],
+            '哈希勒根达坂': [43.838923, 84.634395],
+            '哈希勒根雪墙': [43.775343, 84.452151],
             '天瀑': [43.5200, 84.5800],
             '独山子城区': [44.3320, 84.8820],
             '独山子大峡谷': [44.3200, 84.8500],
@@ -2015,7 +2016,7 @@
                     {points: [locations['喀什徕宁机场'], locations['喀什古城']], color: '#FF6B6B', weight: 4, opacity: 0.9},
                     {points: [locations['喀什古城'], locations['白沙湖'], locations['喀拉库勒湖'], locations['塔什库尔干县城']], color: '#4ECDC4', weight: 4, opacity: 0.9},
                     {points: [locations['塔什库尔干县城'], locations['盘龙古道观景台'], locations['班迪尔蓝湖'], locations['喀什古城']], color: '#45B7D1', weight: 4, opacity: 0.9},
-                    {points: [locations['乌鲁木齐地窝堡机场'], locations['赛里木湖'], locations['温泉县天泉酒店']], color: '#96CEB4', weight: 4, opacity: 0.9},
+                    {points: [locations['乌鲁木齐地窝堡机场'], locations['精河服务区'], locations['赛里木湖'], locations['温泉县天泉酒店']], color: '#96CEB4', weight: 4, opacity: 0.9},
                     {points: [locations['赛里木湖'], locations['果子沟大桥'], locations['解忧公主薰衣草园'], locations['霍尔果斯国门景区'], locations['特克斯八卦城']], color: '#FFEAA7', weight: 4, opacity: 0.9},
                     {points: [locations['特克斯八卦城'], locations['喀拉峻猎鹰台'], locations['新源县城']], color: '#DDA0DD', weight: 4, opacity: 0.9},
                     {points: [locations['新源县城'], locations['唐布拉百花谷'], locations['乔尔玛镇'], locations['哈希勒根达坂'], locations['独山子城区'], locations['奎屯独库公路非繁云居']], color: '#FFB347', weight: 4, opacity: 0.9},
@@ -2073,7 +2074,7 @@
                 zoom: 9
             },
             'day4': {
-                routes: [{points: [locations['乌鲁木齐机场取车点'], locations['赛里木湖'], locations['温泉县天泉酒店']], color: colors.day, weight: 4, opacity: 0.9}],
+                routes: [{points: [locations['乌鲁木齐机场取车点'], locations['精河服务区'], locations['赛里木湖'], locations['温泉县天泉酒店']], color: colors.day, weight: 4, opacity: 0.9}],
                 markers: [
                     {name: '✈️ 乌鲁木齐机场', coord: locations['乌鲁木齐地窝堡机场'], type: 'city', navName: '乌鲁木齐地窝堡机场'},
                     {name: '💧 赛里木湖', coord: locations['赛里木湖'], type: 'scenic', navName: '赛里木湖东门游客服务中心'},
@@ -2112,7 +2113,7 @@
                     {name: '⭐ 唐布拉', coord: locations['唐布拉百花谷'], type: 'scenic', navName: '唐布拉百里画廊'},
                     {name: '⛽ 乔尔玛', coord: locations['乔尔玛镇'], type: 'city', navName: '乔尔玛'},
                     {name: '❄️ 哈希勒根', coord: locations['哈希勒根达坂'], type: 'scenic', navName: '哈希勒根达坂'},
-                    {name: '🏨 奎屯独库公路非繁云居', coord: locations['奎屯独库公路非繁云居'], type: 'hotel', navName: '奎屯独库公路非繁云居酒店'}}
+                    {name: '🏨 奎屯独库公路非繁云居', coord: locations['奎屯独库公路非繁云居'], type: 'hotel', navName: '奎屯独库公路非繁云居酒店'},
                 ],
                 center: [43.8, 84.1],
                 zoom: 8
@@ -2166,6 +2167,68 @@
             mapLayers = [];
         }
 
+        // WGS84 转 GCJ02 坐标纠偏
+        function wgs84ToGcj02(lng, lat) {
+            const a = 6378245.0, ee = 0.00669342162296594235;
+            if (lng < 72.004 || lng > 137.8347 || lat < 0.8293 || lat > 55.8271) return [lng, lat];
+            let dLat = transformLat(lng - 105.0, lat - 35.0);
+            let dLng = transformLng(lng - 105.0, lat - 35.0);
+            const radLat = lat / 180.0 * Math.PI;
+            let magic = Math.sin(radLat);
+            magic = 1 - ee * magic * magic;
+            const sqrtMagic = Math.sqrt(magic);
+            dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * Math.PI);
+            dLng = (dLng * 180.0) / (a / sqrtMagic * Math.cos(radLat) * Math.PI);
+            return [lng + dLng, lat + dLat];
+        }
+        function transformLat(x, y) {
+            let ret = -100.0 + 2.0*x + 3.0*y + 0.2*y*y + 0.1*x*y + 0.2*Math.sqrt(Math.abs(x));
+            ret += (20.0*Math.sin(6.0*x*Math.PI) + 20.0*Math.sin(2.0*x*Math.PI)) * 2.0/3.0;
+            ret += (20.0*Math.sin(y*Math.PI) + 40.0*Math.sin(y/3.0*Math.PI)) * 2.0/3.0;
+            ret += (160.0*Math.sin(y/12.0*Math.PI) + 320*Math.sin(y*Math.PI/30.0)) * 2.0/3.0;
+            return ret;
+        }
+        function transformLng(x, y) {
+            let ret = 300.0 + x + 2.0*y + 0.1*x*x + 0.1*x*y + 0.1*Math.sqrt(Math.abs(x));
+            ret += (20.0*Math.sin(6.0*x*Math.PI) + 20.0*Math.sin(2.0*x*Math.PI)) * 2.0/3.0;
+            ret += (20.0*Math.sin(x*Math.PI) + 40.0*Math.sin(x/3.0*Math.PI)) * 2.0/3.0;
+            ret += (150.0*Math.sin(x/12.0*Math.PI) + 300.0*Math.sin(x/30.0*Math.PI)) * 2.0/3.0;
+            return ret;
+        }
+
+        // GCJ02 转 WGS84（反向近似）
+        function gcj02ToWgs84(lng, lat) {
+            const [gLng, gLat] = wgs84ToGcj02(lng, lat);
+            return [lng * 2 - gLng, lat * 2 - gLat];
+        }
+
+        async function fetchDrivingRoute(points) {
+            const cacheKey = points.map(p => `${p[1]},${p[0]}`).join('|');
+            if (routeCache[cacheKey]) return routeCache[cacheKey];
+
+            try {
+                // points是GCJ02的[lat,lng]，OSRM需要WGS84的lng,lat
+                const wgsPoints = points.map(p => {
+                    const [wLng, wLat] = gcj02ToWgs84(p[1], p[0]);
+                    return `${wLng},${wLat}`;
+                });
+                const url = `https://router.project-osrm.org/route/v1/driving/${wgsPoints.join(';')}?overview=full&geometries=geojson`;
+                const resp = await fetch(url);
+                const data = await resp.json();
+                if (data.code === 'Ok' && data.routes && data.routes[0]) {
+                    const coords = data.routes[0].geometry.coordinates.map(([lng, lat]) => {
+                        const [gLng, gLat] = wgs84ToGcj02(lng, lat);
+                        return [gLat, gLng];
+                    });
+                    routeCache[cacheKey] = coords;
+                    return coords;
+                }
+            } catch(e) {
+                console.warn('OSRM路径规划失败:', e);
+            }
+            return points;
+        }
+
         function getMarkerColor(type) {
             const dayColors = {
                 'day1': '#FF6B6B', 'day2': '#4ECDC4', 'day3': '#45B7D1',
@@ -2206,15 +2269,18 @@
             });
         }
 
-        function drawDayRoute(dayId) {
+        async function drawDayRoute(dayId) {
             clearMap();
-            
+
             const dayData = dayRoutes[dayId];
             if (!dayData) return;
-            
-            // 绘制路线
-            dayData.routes.forEach(route => {
-                const polyline = L.polyline(route.points, {
+
+            // 绘制路线 - 使用高德路径规划API获取实际道路
+            const routePromises = dayData.routes.map(route => fetchDrivingRoute(route.points));
+            const allCoords = await Promise.all(routePromises);
+            allCoords.forEach((coords, i) => {
+                const route = dayData.routes[i];
+                const polyline = L.polyline(coords, {
                     color: route.color,
                     weight: route.weight,
                     opacity: route.opacity
