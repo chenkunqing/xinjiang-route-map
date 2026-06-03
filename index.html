@@ -2343,13 +2343,15 @@
                 mapLayers.push(labelMarker);
                 
                 const navName = marker.navName || marker.name;
-                const amapUrl = `https://uri.amap.com/marker?position=${marker.coord[1]},${marker.coord[0]}&name=${encodeURIComponent(navName)}&coordinate=gaode&callnative=1`;
+                const navLat = marker.coord[0], navLng = marker.coord[1];
+                const amapUrl = `amapuri://route/plan/?dlat=${navLat}&dlon=${navLng}&dname=${encodeURIComponent(navName)}&dev=0&t=0`;
+                const amapWebUrl = `https://uri.amap.com/navigation?to=${navLng},${navLat},${encodeURIComponent(navName)}&mode=car&callnative=1`;
                 
                 const popupContent = `
                     <div style="text-align:center;">
                         <b style="font-size:14px;">${marker.name}</b><br>
                         <div style="font-size:11px;color:#666;margin:4px 0;">📍 导航至：${navName}</div>
-                        <a href="${amapUrl}" target="_blank" style="
+                        <a href="${amapUrl}" data-web-url="${amapWebUrl}" class="nav-deeplink" style="
                             display:inline-block;
                             margin-top:6px;
                             padding:6px 16px;
@@ -2550,8 +2552,39 @@ Day9 返程: 乌鲁木齐机场还车返程
             });
         }
         
-        // 导航链接功能
-        const navPlaces = {
+        // 导航链接功能 - 使用高德深度链接直接打开APP
+        // navName → [lat, lng] 坐标映射
+        const navCoordMap = {
+            '喀什徕宁机场': [39.5436, 76.0197],
+            '喀什古城': [39.4676, 75.9879],
+            '汉庭喀什东城百合苑商业步行街店': [39.458616, 76.053605],
+            '塔什库尔干县': [37.7756, 75.2247],
+            '白沙湖景区游客中心': [38.8565, 75.1525],
+            '喀拉库勒湖景区入口': [38.4456, 75.2456],
+            '金草滩': [37.7730, 75.2310],
+            '赛里木湖东门游客服务中心': [44.6012, 81.2078],
+            '温泉县天泉酒店': [44.973573, 81.026093],
+            '果子沟大桥': [44.3512, 80.9512],
+            '解忧公主薰衣草园': [44.0615, 80.8685],
+            '霍尔果斯国门': [44.1215, 80.4215],
+            '麗枫酒店・特克斯八卦城离街店': [43.206804, 81.851485],
+            '喀拉峻景区': [43.1200, 81.8800],
+            '喀拉峻草原': [43.1800, 81.9200],
+            '原舍民宿': [43.425046, 83.27181],
+            '唐布拉百里画廊': [43.718426, 83.919793],
+            '乔尔玛': [43.653744, 84.382897],
+            '独库公路': [43.838923, 84.634395],
+            '哈希勒根达坂': [43.838923, 84.634395],
+            '独山子大峡谷': [44.3200, 84.8500],
+            '安集海大峡谷': [44.2300, 85.6700],
+            '乌鲁木齐国际大巴扎': [43.7958, 87.6168],
+            '悠居四季酒店(天山国际机场店)': [43.898291, 87.36426],
+            '奎屯独库公路非繁云居酒店': [44.44576, 84.906355],
+            '乌鲁木齐地窝堡机场': [43.9070, 87.4740]
+        };
+
+        // 按文字匹配的关键词映射（用于行程文本中的地名匹配）
+        const navTextMap = {
             '喀什徕宁机场': '喀什徕宁机场',
             '喀什古城': '喀什古城',
             '塔什库尔干': '塔什库尔干县',
@@ -2559,32 +2592,70 @@ Day9 返程: 乌鲁木齐机场还车返程
             '喀拉库勒湖': '喀拉库勒湖景区入口',
             '金草滩': '金草滩',
             '赛里木湖': '赛里木湖东门游客服务中心',
+            '温泉县天泉酒店': '温泉县天泉酒店',
+            '果子沟大桥': '果子沟大桥',
             '解忧公主薰衣草园': '解忧公主薰衣草园',
             '霍尔果斯': '霍尔果斯国门',
-            '特克斯': '特克斯八卦城',
+            '特克斯': '麗枫酒店・特克斯八卦城离街店',
             '喀拉峻': '喀拉峻草原',
             '唐布拉': '唐布拉百里画廊',
-            '乔尔玛': '乔尔玛镇',
+            '乔尔玛': '乔尔玛',
             '独库公路': '独库公路',
-            '乌鲁木齐': '乌鲁木齐',
-            '大巴扎': '乌鲁木齐国际大巴扎'
+            '哈希勒根': '哈希勒根达坂',
+            '独山子大峡谷': '独山子大峡谷',
+            '安集海': '安集海大峡谷',
+            '大巴扎': '乌鲁木齐国际大巴扎',
+            '乌鲁木齐': '乌鲁木齐国际大巴扎'
         };
-        
+
+        function buildNavUrl(name) {
+            const coord = navCoordMap[name];
+            if (!coord) return null;
+            // amapuri:// 深度链接 — 手机端直接打开高德APP并规划路线
+            return `amapuri://route/plan/?dlat=${coord[0]}&dlon=${coord[1]}&dname=${encodeURIComponent(name)}&dev=0&t=0`;
+        }
+
         function addNavLinks() {
             document.querySelectorAll('.timeline-content').forEach(el => {
                 if (el.dataset.navAdded) return;
                 let html = el.innerHTML;
-                for (const [place, navName] of Object.entries(navPlaces)) {
-                    const encoded = encodeURIComponent(navName);
-                    const amapUrl = `https://uri.amap.com/marker?position=${encodeURIComponent(place)}&name=${encoded}&coordinate=gaode&callnative=1`;
-                    const link = `<a href="${amapUrl}" target="_blank" style="color:#6366f1;text-decoration:underline;" onclick="event.stopPropagation();">📍 导航</a>`;
-                    html = html.replace(new RegExp(place + '(?![^<]*>)', 'g'), match => match + ' ' + link);
+                for (const [keyword, navName] of Object.entries(navTextMap)) {
+                    const url = buildNavUrl(navName);
+                    if (!url) continue;
+                    // 避免重复添加（已包含导航链接的跳过）
+                    if (html.includes(`data-nav-name="${navName}"`)) continue;
+                    const link = `<a href="${url}" data-nav-name="${navName}" style="color:#6366f1;text-decoration:underline;cursor:pointer;" onclick="event.stopPropagation();">📍 导航</a>`;
+                    // 在地名后面插入导航链接，但不在已有的标签内
+                    html = html.replace(new RegExp(keyword + '(?![^<]*>)', 'g'), match => match + ' ' + link);
                 }
                 el.innerHTML = html;
                 el.dataset.navAdded = 'true';
             });
         }
-        
+
+        // 点击事件委托：处理所有导航链接（包括弹窗和文字链接）
+        document.addEventListener('click', function(e) {
+            const navLink = e.target.closest('.nav-deeplink');
+            if (navLink) {
+                e.preventDefault();
+                const webUrl = navLink.getAttribute('data-web-url');
+                const href = navLink.getAttribute('href');
+                // 尝试深度链接打开APP，超时后降级到网页版
+                window.location.href = href;
+                setTimeout(() => {
+                    if (webUrl) window.open(webUrl, '_blank');
+                }, 2000);
+                return;
+            }
+            // 处理文字导航链接
+            const textLink = e.target.closest('[data-nav-name]');
+            if (textLink) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.location.href = textLink.getAttribute('href');
+            }
+        });
+
         // 页面加载后添加导航链接
         document.addEventListener('DOMContentLoaded', addNavLinks);
     </script>
